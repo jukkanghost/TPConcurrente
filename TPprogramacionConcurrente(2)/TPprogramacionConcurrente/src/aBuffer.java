@@ -3,7 +3,7 @@ public class aBuffer implements Runnable {
     private Monitor monitor;
     private int t1[];
     private int t2[];
-    private String buffer;
+    //private String buffer;
     
     public aBuffer(int t1[], int t2[], Monitor monitor) {
         this.t1 = t1;

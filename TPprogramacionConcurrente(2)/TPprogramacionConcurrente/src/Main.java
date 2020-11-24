@@ -57,7 +57,9 @@ public class Main {
 		Thread ar = new Thread(arribo);
 		ar.setName("ARRIBO");
 		Thread ab1 = new Thread(aBuffer1);
-        Thread ab2 = new Thread(aBuffer2);
+		ab1.setName("BUFFER 1");
+		Thread ab2 = new Thread(aBuffer2);
+		ab2.setName("BUFFER 2");
 		
 		enc1.start();
 		enc2.start();
