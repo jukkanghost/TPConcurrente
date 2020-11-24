@@ -45,6 +45,7 @@ public class Monitor {
                                                             System.out.println("Elementos en el buffer 1: " + rdp.getElementosBuffer1());
                                                             break;
                                                     case 2: transicion = 10;
+                                                    assert Thread.currentThread().getName().equals("SERVICIO 2");
                                                         tiempo.setTiempoActual(System.currentTimeMillis(), t);
                                                         System.out.println(Thread.currentThread().getName() + " esta resolviendo una tarea");
                                                             break;
@@ -70,10 +71,12 @@ public class Monitor {
                                                         System.out.println(Thread.currentThread().getName() + " apago el nucleo");
                                                         break;
                                                     case 8: transicion = 16;
+                                                        assert Thread.currentThread().getName().equals("ARRIBO"); 
                                                         tiempo.setTiempoActual(System.currentTimeMillis(), t);
                                                         System.out.println("Arribo una tarea");
                                                         break;
                                                     case 9: transicion = 2;
+                                                    assert Thread.currentThread().getName().equals("SERVICIO 1");
                                                         tiempo.setTiempoActual(System.currentTimeMillis(), t);
                                                         System.out.println(Thread.currentThread().getName() + " esta resolviendo una tarea");
                                                             break;
