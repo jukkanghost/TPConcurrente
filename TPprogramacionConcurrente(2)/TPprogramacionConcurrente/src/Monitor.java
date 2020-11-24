@@ -126,7 +126,7 @@ public class Monitor {
                                         assert p5 == 1 : String.format("Invariante 5 no cumplido");
 
                         int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-                        int decision = politica.resolverConflicto(sensibilizadas); //Una vex que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
+                        int decision = politica.resolverConflicto(sensibilizadas); //Una vez que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
                         //int decision = politica.resolverConflictoRandom(sensibilizadas);
                         semaforos[decision].release();
 					break;
