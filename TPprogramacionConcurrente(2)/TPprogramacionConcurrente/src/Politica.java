@@ -3,6 +3,12 @@ public class Politica {
     // private boolean terminado2 = false;
     // private boolean arribo = false;
     // private String name;
+
+    /*
+        HABRIA QUE CAMBIAR QUE LE CONFLICTO SOLO SUCEDA EN LA QUE
+        EFECTIVAMENTE CREAN CONFLICTO Y DEJAR QUE LAS TRANSICIONES
+        SEAN DISPARADAS EN PARALELO. ASI GANAR MUCHA EFICIENCIA.
+    */
 	private Buffer buffer1;
 	private Buffer buffer2;
         private RedDePetri rdp;
