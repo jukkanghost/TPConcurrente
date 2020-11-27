@@ -120,4 +120,3 @@ public class Log {
 		file1.renameTo(file);
 	}
 }
-
