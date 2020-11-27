@@ -10,7 +10,7 @@ public class Arribo implements Runnable {
 	@Override
 	public void run() {
 		while(monitor.getTareas()<1000) {
-				monitor.disparar(t);
+			monitor.disparar(t);
 			}
 		}
 	}
