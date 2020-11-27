@@ -9,6 +9,7 @@ public class Politica {
         EFECTIVAMENTE CREAN CONFLICTO Y DEJAR QUE LAS TRANSICIONES
         SEAN DISPARADAS EN PARALELO. ASI GANAR MUCHA EFICIENCIA.
     */
+    private int confli = 0;
 	private Buffer buffer1;
 	private Buffer buffer2;
         private RedDePetri rdp;
@@ -52,6 +53,34 @@ public class Politica {
 	        int r = (int) (Math.random() * sens.length);
           return sens[r];
       }
+
+    public int decidir(int[] sens) {
+        int elegida = -1;
+        for (int i = 0; i < sens.length; i++) {
+            if (sens[i] == 1 || sens[i] == 15) {
+                confli = 1;
+            }
+        }
+        if (confli == 1) {
+            confli = 0;
+            double random = Math.random();
+            int b1 = buffer1.getElementos();
+            int b2 = buffer2.getElementos();
+            if (b1 > b2) { elegida = 15;}
+            if (b2 > b1) { elegida = 0;}
+            if (b1 == b2) {
+                if(random > 0.5) {
+                    elegida = 15;
+                }
+                else {elegida = 0;}
+            }
+            return elegida;
+        }
+        else {
+            int r = (int) (Math.random() * sens.length);
+            return elegida = sens[r];
+        }
+    }
 
 }
 

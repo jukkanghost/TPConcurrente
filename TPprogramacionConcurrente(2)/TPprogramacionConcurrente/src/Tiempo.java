@@ -1,5 +1,5 @@
 public class Tiempo {
-    private int []tiempo = {0, 0, 10, 0, 0, 0, 0, 0, 5, 10, 0, 0, 0, 0, 0, 0, 0};
+    private int []tiempo = {0, 0, 20, 0, 0, 0, 0, 0, 10, 20, 0, 0, 0, 0, 0, 0, 0};
     private long []tiempoInicial = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     // Transiciones = ( 0 - 1 - 10 - 11 - 12 - 13 - 14 - 15 - 16 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 - nada)
     public Tiempo() {

@@ -11,7 +11,6 @@ public class Monitor {
 	private int tareas2;
 	private Tiempo tiempo;
     private boolean end = true;
-    private int confli = 0;
     
     /*
         CONFLICTO TIENEN:
@@ -135,22 +134,10 @@ public class Monitor {
                                         assert p5 == 1 : String.format("Invariante 5 no cumplido");
 
                         int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-                        for (int i = 0; i < sensibilizadas.length; i++) {
-                            if (sensibilizadas[i] == 1 || sensibilizadas[i] == 15) {
-                                confli = 1;
-                            }
-                        }
-                        if (confli == 1) {
-                            confli = 0;
-                            //int decision = politica.resolverConflicto(sensibilizadas); //Una vez que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
-                            int decision = politica.resolverConflictoRandom(sensibilizadas);
-                            semaforos[decision].release();
-                        }
-                        else {
-                            for (int i = 0; i < sensibilizadas.length; i++) {
-                                semaforos[sensibilizadas[i]].release();
-                            }
-                        }
+                        //int decision = politica.resolverConflicto(sensibilizadas); //Una vez que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
+                        //int decision = politica.resolverConflictoRandom(sensibilizadas);
+                        int decision = politica.decidir(sensibilizadas);
+                        semaforos[decision].release();
 					break;
 				} else {
 					semaforo.release();
