@@ -13,8 +13,10 @@ public class Log {
 	private FileWriter fichero;
 	private PrintWriter pw;
 	private BufferedReader br;
+	private StringBuffer info;
 	
 	public Log() {
+		info = new StringBuffer();
 		fichero = null;
 		pw = null;
 		try {
@@ -65,6 +67,18 @@ public class Log {
 		}
 	}
 	
+	public StringBuffer sacarInfo() {
+		abrir();
+		String linea;
+		while ((linea = leer()) != null) {
+			//System.out.println(linea);
+			info.append(linea);
+			//System.out.println(info);
+		}
+		cerrar();
+		return info;
+		//System.out.println("info " + info);
+	}
 	
 	public void eliminar (int contador[]) {
 		fichero = null;
