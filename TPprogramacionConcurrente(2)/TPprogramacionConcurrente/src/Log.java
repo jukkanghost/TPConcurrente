@@ -79,6 +79,24 @@ public class Log {
 		return info;
 		//System.out.println("info " + info);
 	}
+
+	public void escribirLog(StringBuffer texto) {
+		fichero = null;
+		pw=null;
+		File file1 = new File(
+				FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath().replace('\\', '/')
+						+ "/log1.txt");
+		try {
+			fichero = new FileWriter(file1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		abrir();
+		pw.print(texto);
+		cerrar();
+		file.delete();
+		file1.renameTo(file);
+	}
 	
 	public void eliminar (int contador[]) {
 		fichero = null;

@@ -162,12 +162,12 @@ public class Regex {
 	private StringBuffer texto = new StringBuffer();
 
 
-	private String invariante1 = "(16 )(.*?)(0 )(.*?)(1 )"; 
-	private String invariante2 = "(2 )(.*?)(3 )";
-	private String invariante3 = "(4 )(.*?)(5 )(.*?)(7 )";
-	private String invariante4 = "(16 )(.*?)(8 )(.*?)(9 )";
-	private String invariante5 = "(10 )(.*?)(11 )";
-	private String invariante6 = "(12 )(.*?)(13 )(.*?)(15 )";
+	private String invariante1 = "(16\\s)(.*?)((0\\s)(.*?)(1\\s)|(8\\s)(.*?)(9\\s))"; 
+	private String invariante2 = "(2\\s)(.*?)(3\\s)";
+	private String invariante3 = "(4\\s)(.*?)(5\\s)(.*?)(7\\s)";
+	//private String invariante4 = "(16\\s)(.*?)(8\\s)(.*?)(9\\s)";
+	private String invariante5 = "(10\\s)(.*?)(11\\s)";
+	private String invariante6 = "(12\\s)(.*?)(13\\s)(.*?)(15\\s)";
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
@@ -176,89 +176,24 @@ public class Regex {
 	}
 
 	public void chequeoInvariantes() {
-		//texto = log.sacarInfo();
-		texto.append("16 2 0 3 1 3 6 7 3 16 0 1 2 4 3 5 6 2 7 16 3 2 0 3 7 1 3 16 0 1 3 6 7 3 16 0 1 3 6 7 3 2 3 16 0 1 3 6 7 3 16 0 1 3 6 7 3 16 0 1 3 6 7 3 16 0 1 3 6 7 3 2 3 2 3 2 3 8 4 5 6 ");
+		texto = log.sacarInfo();
+		texto.append("16 0 1 14 2 6 3 4 14 5 6 6 7 14 16 6 8 9 6 10 14 11 14 12 13 15 ");
 		
 		Pattern pattern = Pattern.compile(invariante1);
 		Pattern pattern2 = Pattern.compile(invariante2);
 		Pattern pattern3 = Pattern.compile(invariante3);
-		Pattern pattern4 = Pattern.compile(invariante4);
+		//Pattern pattern4 = Pattern.compile(invariante4);
 		Pattern pattern5 = Pattern.compile(invariante5);
 		Pattern pattern6 = Pattern.compile(invariante6);
 
-		Matcher matcher = pattern.matcher(texto);
+		int contadorinv1 = 0;
+		int contadorinv2 = 0;
+		int contadorinv3 = 0;
+		int contadorinv4 = 0;
+		int contadorinv5 = 0;
+		int contadorinv6 = 0;
 		
-		int contador = 0;
-
-		while (matcher.find()) {
-            System.out.print("Start index: " + matcher.start());
-			System.out.print(" End index: " + matcher.end() + " ");
-			for (int i = 0; i <= matcher.groupCount(); i++) {
-				System.out.println("Match " + i + " " + matcher.group(i));
-				System.out.println("Start index -- " + matcher.start(i));
-				System.out.println("Start index -- " + matcher.end(i));	
-			}
-			startIndexs.add(matcher.start(1));
-			endIndexs.add(matcher.end(1));
-			startIndexs.add(matcher.start(3));
-			endIndexs.add(matcher.end(3));
-			startIndexs.add(matcher.start(5));
-			endIndexs.add(matcher.end(5));
-			contador++;
-		}
-		System.out.println("invariante 1 " + contador);
-		for (int j = startIndexs.size(); j > 0; j--) {
-			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
-		}
-		System.out.println(texto);
-		
-		contador = 0;
-		startIndexs.clear();
-		endIndexs.clear();
-		Matcher matcher2 = pattern2.matcher(texto);
-		while (matcher2.find()) {
-			for (int i = 0; i <= matcher2.groupCount(); i++) {
-				System.out.println("Match " + i + " " + matcher2.group(i));
-			}
-			startIndexs.add(matcher2.start(1));
-			endIndexs.add(matcher2.end(1));
-			startIndexs.add(matcher2.start(3));
-			endIndexs.add(matcher2.end(3));
-		 	contador++;
-		}
-		System.out.println("invariante 2 " + contador);
-
-		for (int j = startIndexs.size(); j > 0; j--) {
-			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
-		}
-		System.out.println(texto);
-		
-		contador = 0;
-		startIndexs.clear();
-		endIndexs.clear();
-
-		Matcher matcher3 = pattern3.matcher(texto);
-		while (matcher3.find()) {
-            System.out.print("Start index: " + matcher3.start());
-            System.out.print(" End index: " + matcher3.end() + " ");
-			for (int i = 0; i <= matcher.groupCount(); i++) {
-				System.out.println("Match " + i + " " + matcher3.group(i));	
-			}
-			startIndexs.add(matcher3.start(1));
-			endIndexs.add(matcher3.end(1));
-			startIndexs.add(matcher3.start(3));
-			endIndexs.add(matcher3.end(3));
-			startIndexs.add(matcher3.start(5));
-			endIndexs.add(matcher3.end(5));
-		 	contador++;
-		}
-		System.out.println("invariante 3 " + contador);
-
-		for (int j = startIndexs.size(); j > 0; j--) {
-			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
-		}
-		System.out.println(texto);
-
+		/*
 		Matcher matcher4 = pattern4.matcher(texto);
 		contador = 0;
 		startIndexs.clear();
@@ -282,55 +217,130 @@ public class Regex {
 		for (int j = startIndexs.size(); j > 0; j--) {
 			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
 		}
-		System.out.println(texto);
-
+*/
 		Matcher matcher5 = pattern5.matcher(texto);
-		contador = 0;
+
 		startIndexs.clear();
 		endIndexs.clear();
 		while (matcher5.find()) {
-            System.out.print("Start index: " + matcher5.start());
-            System.out.print(" End index: " + matcher5.end() + " ");
-			for (int i = 0; i <= matcher5.groupCount(); i++) {
-				System.out.println("Match " + i + " " + matcher5.group(i));	
-			}
+            // System.out.print("Start index: " + matcher5.start());
+            // System.out.print(" End index: " + matcher5.end() + " ");
+			// for (int i = 0; i <= matcher5.groupCount(); i++) {
+			// 	System.out.println("Match " + i + " " + matcher5.group(i));	
+			// }
 			startIndexs.add(matcher5.start(1));
 			endIndexs.add(matcher5.end(1));
 			startIndexs.add(matcher5.start(3));
 			endIndexs.add(matcher5.end(3));
-		 	contador++;
+		 	contadorinv5++;
 		}
-		System.out.println("invariante 5 " + contador);
-
 		for (int j = startIndexs.size(); j > 0; j--) {
 			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
 		}
-		System.out.println(texto);
 
-		contador = 0;
 		startIndexs.clear();
 		endIndexs.clear();
+
 		Matcher matcher6 = pattern6.matcher(texto);
 		while (matcher6.find()) {
-            System.out.print("Start index: " + matcher6.start());
-            System.out.print(" End index: " + matcher6.end() + " ");
-			for (int i = 0; i <= matcher6.groupCount(); i++) {
-				System.out.println("Match " + i + " " + matcher6.group(i));	
-			}
+            // System.out.print("Start index: " + matcher6.start());
+            // System.out.print(" End index: " + matcher6.end() + " ");
+			// for (int i = 0; i <= matcher6.groupCount(); i++) {
+			// 	System.out.println("Match " + i + " " + matcher6.group(i));	
+			// }
 			startIndexs.add(matcher6.start(1));
 			endIndexs.add(matcher6.end(1));
 			startIndexs.add(matcher6.start(3));
 			endIndexs.add(matcher6.end(3));
 			startIndexs.add(matcher6.start(5));
 			endIndexs.add(matcher6.end(5));
-		 	contador++;
+		 	contadorinv6++;
 		}
-		System.out.println("invariante 6 " + contador);
+		for (int j = startIndexs.size(); j > 0; j--) {
+			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
+		}		
+		
+		startIndexs.clear();
+		endIndexs.clear();
 
+		Matcher matcher2 = pattern2.matcher(texto);
+		while (matcher2.find()) {
+			// for (int i = 0; i <= matcher2.groupCount(); i++) {
+			// 	System.out.println("Match " + i + " " + matcher2.group(i));
+			// }
+			startIndexs.add(matcher2.start(1));
+			endIndexs.add(matcher2.end(1));
+			startIndexs.add(matcher2.start(3));
+			endIndexs.add(matcher2.end(3));
+			contadorinv2++;
+		}
 		for (int j = startIndexs.size(); j > 0; j--) {
 			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
 		}
-		System.out.println(texto);		
+		
+		Matcher matcher = pattern.matcher(texto);
+		
+		startIndexs.clear();
+		endIndexs.clear();
+
+		while (matcher.find()) {
+			// System.out.print("Start index: " + matcher.start());
+			// System.out.print(" End index: " + matcher.end() + " ");
+			// for (int i = 0; i <= matcher.groupCount(); i++) {
+			// 	System.out.println("Match " + i + " " + matcher.group(i));
+			// }
+			startIndexs.add(matcher.start(1));
+			endIndexs.add(matcher.end(1));
+			if (matcher.group(4)==null) {
+				startIndexs.add(matcher.start(7));
+				endIndexs.add(matcher.end(7));
+				startIndexs.add(matcher.start(9));
+				endIndexs.add(matcher.end(9));
+				contadorinv4++;
+			}
+			else {
+				startIndexs.add(matcher.start(4));
+				endIndexs.add(matcher.end(4));
+				startIndexs.add(matcher.start(6));
+				endIndexs.add(matcher.end(6));
+				contadorinv1++;
+			}
+		}
+		for (int j = startIndexs.size(); j > 0; j--) {
+			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
+		}
+
+		startIndexs.clear();
+		endIndexs.clear();
+
+		Matcher matcher3 = pattern3.matcher(texto);
+		while (matcher3.find()) {
+            // System.out.print("Start index: " + matcher3.start());
+            // System.out.print(" End index: " + matcher3.end() + " ");
+			// for (int i = 0; i <= matcher3.groupCount(); i++) {
+			// 	System.out.println("Match " + i + " " + matcher3.group(i));
+			// }
+			startIndexs.add(matcher3.start(1));
+			endIndexs.add(matcher3.end(1));
+			startIndexs.add(matcher3.start(3));
+			endIndexs.add(matcher3.end(3));
+			startIndexs.add(matcher3.start(5));
+			endIndexs.add(matcher3.end(5));
+		 	contadorinv3++;
+		}
+		for (int j = startIndexs.size(); j > 0; j--) {
+			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
+		}
+
+
+		System.out.println("invariante 1 " + contadorinv1);
+		System.out.println("invariante 2 " + contadorinv2);
+		System.out.println("invariante 3 " + contadorinv3);
+		System.out.println("invariante 4 " + contadorinv4);
+		System.out.println("invariante 5 " + contadorinv5);
+		System.out.println("invariante 6 " + contadorinv6);
+
+		log.escribirLog(texto);
 	}
     
 }
