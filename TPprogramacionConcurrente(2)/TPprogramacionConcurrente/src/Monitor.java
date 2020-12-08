@@ -119,7 +119,7 @@ public class Monitor {
                                                 break;
                                             }
                                         }
-                                        log.escribir(transicion + " \n");
+                                        log.escribir(transicion + "  \n");
                                         //INVARIANTES DE PLAZA
                                         int p1 = rdp.getMP0() + rdp.getMP1() + rdp.getMP9() + rdp.getMP17();
                                         int p2 = rdp.getMP3() + rdp.getMP4();

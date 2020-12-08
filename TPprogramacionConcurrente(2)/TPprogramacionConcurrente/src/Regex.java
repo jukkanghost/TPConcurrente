@@ -169,6 +169,8 @@ public class Regex {
 	private String invariante5 = "(10\\s)(.*?)(11\\s)";
 	private String invariante6 = "(12\\s)(.*?)(13\\s)(.*?)(15\\s)";
 
+	private String invarianteTodo = "((10\\s)(.*?)(11\\s))|((12\\s)(.*?)(13\\s)(.*?)(15\\s))|((2\\s)(.*?)(3\\s))|((16\\s)(.*?)((0\\s)(.*?)(1\\s)|(8\\s)(.*?)(9\\s)))|((\\s4)(.*?)(5\\s)(.*?)(7\\s))";
+
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
 	public Regex (Log log) {
@@ -176,8 +178,8 @@ public class Regex {
 	}
 
 	public void chequeoInvariantes() {
-		texto = log.sacarInfo();
-		texto.append("16 0 1 14 2 6 3 4 14 5 6 6 7 14 16 6 8 9 6 10 14 11 14 12 13 15 ");
+		//texto = log.sacarInfo();
+		texto.append("16  0  1  14  2  6  3  4  14  5  6  6  7  14  16  6  8  9  6  10  14  11  14  12  13  15  ");
 		
 		Pattern pattern = Pattern.compile(invariante1);
 		Pattern pattern2 = Pattern.compile(invariante2);
@@ -186,12 +188,86 @@ public class Regex {
 		Pattern pattern5 = Pattern.compile(invariante5);
 		Pattern pattern6 = Pattern.compile(invariante6);
 
+		Pattern patternTodo = pattern.compile(invarianteTodo);
+
+
+
 		int contadorinv1 = 0;
 		int contadorinv2 = 0;
 		int contadorinv3 = 0;
 		int contadorinv4 = 0;
 		int contadorinv5 = 0;
 		int contadorinv6 = 0;
+		int contadorTodo = 0;
+
+
+		Matcher matcherTodo = patternTodo.matcher(texto);
+
+		while (matcherTodo.find()) {
+			System.out.print("Start index: " + matcherTodo.start());
+            System.out.print(" End index: " + matcherTodo.end() + " ");
+			for (int i = 0; i <= matcherTodo.groupCount(); i++) {
+				System.out.println("Match " + i + " " + matcherTodo.group(i));	
+			}
+			if (matcherTodo.group(15)!=null) {
+				startIndexs.add(matcherTodo.start(16));
+				endIndexs.add(matcherTodo.end(16));
+				if (matcherTodo.group(19)!=null) {
+					contadorinv1++;
+					startIndexs.add(matcherTodo.start(19));
+					endIndexs.add(matcherTodo.end(19));
+					startIndexs.add(matcherTodo.start(21));
+					endIndexs.add(matcherTodo.end(21));
+				}
+				else {
+					contadorinv4++;
+					startIndexs.add(matcherTodo.start(22));
+					endIndexs.add(matcherTodo.end(22));
+					startIndexs.add(matcherTodo.start(24));
+					endIndexs.add(matcherTodo.end(24));
+				}
+			}
+			else if (matcherTodo.group(11)!=null) {
+				contadorinv2++;
+				startIndexs.add(matcherTodo.start(12));
+				endIndexs.add(matcherTodo.end(12));
+				startIndexs.add(matcherTodo.start(14));
+				endIndexs.add(matcherTodo.end(14));
+			}
+			else if (matcherTodo.group(25)!=null) {
+				contadorinv3++;
+				startIndexs.add(matcherTodo.start(26));
+				endIndexs.add(matcherTodo.end(26));
+				startIndexs.add(matcherTodo.start(28));
+				endIndexs.add(matcherTodo.end(28));
+				startIndexs.add(matcherTodo.start(30));
+				endIndexs.add(matcherTodo.end(30));
+			}
+			else if (matcherTodo.group(1)!=null) {
+				contadorinv5++;
+				startIndexs.add(matcherTodo.start(2));
+				endIndexs.add(matcherTodo.end(2));
+				startIndexs.add(matcherTodo.start(4));
+				endIndexs.add(matcherTodo.end(4));
+			}
+			else if (matcherTodo.group(5)!=null) {
+				contadorinv6++;
+				startIndexs.add(matcherTodo.start(6));
+				endIndexs.add(matcherTodo.end(6));
+				startIndexs.add(matcherTodo.start(8));
+				endIndexs.add(matcherTodo.end(8));
+				startIndexs.add(matcherTodo.start(10));
+				endIndexs.add(matcherTodo.end(10));
+			}
+			contadorTodo++;
+		}
+		System.out.println("invariantes " + contadorTodo);
+
+		for (int j = startIndexs.size(); j > 0; j--) {
+			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
+		}
+
+		System.out.println(texto);
 		
 		/*
 		Matcher matcher4 = pattern4.matcher(texto);
@@ -217,7 +293,7 @@ public class Regex {
 		for (int j = startIndexs.size(); j > 0; j--) {
 			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
 		}
-*/
+
 		Matcher matcher5 = pattern5.matcher(texto);
 
 		startIndexs.clear();
@@ -331,7 +407,7 @@ public class Regex {
 		for (int j = startIndexs.size(); j > 0; j--) {
 			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
 		}
-
+		*/
 
 		System.out.println("invariante 1 " + contadorinv1);
 		System.out.println("invariante 2 " + contadorinv2);
