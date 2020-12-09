@@ -169,7 +169,7 @@ public class Regex {
 	private String invariante5 = "(10\\s)(.*?)(11\\s)";
 	private String invariante6 = "(12\\s)(.*?)(13\\s)(.*?)(15\\s)";
 
-	private String invarianteTodo = "((10\\s)(.*?)(11\\s))|((12\\s)(.*?)(13\\s)(.*?)(15\\s))|((2\\s)(.*?)(3\\s))|((16\\s)(.*?)((0\\s)(.*?)(1\\s)|(8\\s)(.*?)(9\\s)))|((\\s4)(.*?)(5\\s)(.*?)(7\\s))";
+	private String invarianteTodo = "((10)(.*?)(11))|((12)(.*?)(13)(.*?)(15))|((\\s2)(.*?)(\\s3))|((16)(.*?)((\\s0)(.*?)(\\s1\\s)|(8)(.*?)(9)))|((\\s4)(.*?)(\\s5)(.*?)(7))";
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
@@ -178,18 +178,17 @@ public class Regex {
 	}
 
 	public void chequeoInvariantes() {
-		//texto = log.sacarInfo();
-		texto.append("16  0  1  14  2  6  3  4  14  5  6  6  7  14  16  6  8  9  6  10  14  11  14  12  13  15  ");
+		texto = log.sacarInfo();
+		//texto.append("16  0  1  14  2  6  3  4  14  5  14  12  13  15  16  0  1  14  2  6  3  4  14  5  6  6  7  14  16  6  8  9  6  10  14  11  14  12  13  15  16  0  1  14  2  6  3  4  14  5  6  6  7  14  16  6  8  9  6  10  14  11  14  12  13  15  16  0  1  14  2   6  6  7  14  16  6  8  9  6  10  14  11  6  3  4  14  5  6  6  7  14  16  6  8  9  6  10  14  11  14  12  13  15  ");
 		
-		Pattern pattern = Pattern.compile(invariante1);
-		Pattern pattern2 = Pattern.compile(invariante2);
-		Pattern pattern3 = Pattern.compile(invariante3);
+		//Pattern pattern = Pattern.compile(invariante1);
+		//Pattern pattern2 = Pattern.compile(invariante2);
+		//Pattern pattern3 = Pattern.compile(invariante3);
 		//Pattern pattern4 = Pattern.compile(invariante4);
-		Pattern pattern5 = Pattern.compile(invariante5);
-		Pattern pattern6 = Pattern.compile(invariante6);
+		//Pattern pattern5 = Pattern.compile(invariante5);
+		//Pattern pattern6 = Pattern.compile(invariante6);
 
-		Pattern patternTodo = pattern.compile(invarianteTodo);
-
+		Pattern patternTodo = Pattern.compile(invarianteTodo);
 
 
 		int contadorinv1 = 0;
@@ -200,15 +199,17 @@ public class Regex {
 		int contadorinv6 = 0;
 		int contadorTodo = 0;
 
-
+		for (int k = 0; k < 10; k++) {
+			
+		
 		Matcher matcherTodo = patternTodo.matcher(texto);
 
 		while (matcherTodo.find()) {
-			System.out.print("Start index: " + matcherTodo.start());
-            System.out.print(" End index: " + matcherTodo.end() + " ");
-			for (int i = 0; i <= matcherTodo.groupCount(); i++) {
-				System.out.println("Match " + i + " " + matcherTodo.group(i));	
-			}
+			//System.out.print("Start index: " + matcherTodo.start());
+            //System.out.print(" End index: " + matcherTodo.end() + " ");
+			// for (int i = 0; i <= matcherTodo.groupCount(); i++) {
+			// 	System.out.println("Match " + i + " " + matcherTodo.group(i));	
+			// }
 			if (matcherTodo.group(15)!=null) {
 				startIndexs.add(matcherTodo.start(16));
 				endIndexs.add(matcherTodo.end(16));
@@ -266,8 +267,11 @@ public class Regex {
 		for (int j = startIndexs.size(); j > 0; j--) {
 			texto.delete(startIndexs.get(j-1), endIndexs.get(j-1));
 		}
-
+		startIndexs.clear();
+		endIndexs.clear();
 		System.out.println(texto);
+		
+	}
 		
 		/*
 		Matcher matcher4 = pattern4.matcher(texto);
@@ -416,6 +420,17 @@ public class Regex {
 		System.out.println("invariante 5 " + contadorinv5);
 		System.out.println("invariante 6 " + contadorinv6);
 
+		String str = texto.toString();
+      //Removing the leading and trailing spaces
+		str = str.trim();
+		String array[] = str.split(" ");
+      //Appending each value to a buffer
+      	StringBuffer result = new StringBuffer();
+      	for(int i=0; i<array.length; i++) {
+			result.append(array[i]);
+		
+      	}
+      	System.out.println("Result: "+result);
 		log.escribirLog(texto);
 	}
     
