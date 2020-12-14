@@ -18,10 +18,6 @@ public class Regex {
 
 	public void chequeoInvariantes() {
 		texto = log.sacarInfo();
-		// texto.append("16 0 1 14 2 6 3 4 14 5 14 12 13 15 16 0 1 14 2 6 3 4 14 5 6 6 7
-		// 14 16 6 8 9 6 10 14 11 14 12 13 15 16 0 1 14 2 6 3 4 14 5 6 6 7 14 16 6 8 9 6
-		// 10 14 11 14 12 13 15 16 0 1 14 2 6 6 7 14 16 6 8 9 6 10 14 11 6 3 4 14 5 6 6
-		// 7 14 16 6 8 9 6 10 14 11 14 12 13 15 ");
 
 		Pattern patternTodo = Pattern.compile(invarianteTodo);
 
@@ -90,14 +86,13 @@ public class Regex {
 				}
 				contadorTodo++;
 			}
-			System.out.println("invariantes " + contadorTodo);
+			
 
 			for (int j = startIndexs.size(); j > 0; j--) {
 				texto.delete(startIndexs.get(j - 1), endIndexs.get(j - 1));
 			}
 			startIndexs.clear();
 			endIndexs.clear();
-			System.out.println(texto);
 			despues = contadorTodo;
 
 			if (antes == despues) {

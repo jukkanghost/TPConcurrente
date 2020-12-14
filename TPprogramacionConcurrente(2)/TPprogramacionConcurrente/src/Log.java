@@ -71,13 +71,10 @@ public class Log {
 		abrir();
 		String linea;
 		while ((linea = leer()) != null) {
-			//System.out.println(linea);
 			info.append(linea);
-			//System.out.println(info);
 		}
 		cerrar();
 		return info;
-		//System.out.println("info " + info);
 	}
 
 	public void escribirLog(StringBuffer texto) {
