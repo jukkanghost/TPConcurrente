@@ -1,12 +1,16 @@
 public class Buffer {
-	private int id;
 	private RedDePetri rdp;
+	private int id;
 	
 	public Buffer(RedDePetri rdp, int id) {
 		this.rdp=rdp;
-		this.id=id;
+		this.id = id;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
 	public int getElementos() {
 		if(id==1) {
 			return rdp.getElementosBuffer1();

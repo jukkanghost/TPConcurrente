@@ -36,11 +36,30 @@ public class Log {
 	public void escribir(String texto) {
 		pw.print(texto);
 	}
+
+	public void escribirLog(StringBuffer texto) {
+		fichero = null;
+		pw=null;
+		File file1 = new File(
+				FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath().replace('\\', '/')
+						+ "/log1.txt");
+		try {
+			fichero = new FileWriter(file1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		abrir();
+		pw.print(texto);
+		cerrar();
+		file.delete();
+		file1.renameTo(file);
+	}
 	
 	public String leer() {
 		try {
 			return br.readLine();
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -66,34 +85,20 @@ public class Log {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public StringBuffer sacarInfo() {
 		abrir();
 		String linea;
 		while ((linea = leer()) != null) {
+			//System.out.println(linea);
 			info.append(linea);
+			//System.out.println(info);
 		}
 		cerrar();
 		return info;
+		//System.out.println("info " + info);
 	}
-
-	public void escribirLog(StringBuffer texto) {
-		fichero = null;
-		pw=null;
-		File file1 = new File(
-				FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath().replace('\\', '/')
-						+ "/log1.txt");
-		try {
-			fichero = new FileWriter(file1);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		abrir();
-		pw.print(texto);
-		cerrar();
-		file.delete();
-		file1.renameTo(file);
-	}
+	
 	
 	public void eliminar (int contador[]) {
 		fichero = null;
@@ -104,6 +109,7 @@ public class Log {
 		try {
 			fichero = new FileWriter(file1);
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 		}
 		abrir();
@@ -149,3 +155,4 @@ public class Log {
 		file1.renameTo(file);
 	}
 }
+

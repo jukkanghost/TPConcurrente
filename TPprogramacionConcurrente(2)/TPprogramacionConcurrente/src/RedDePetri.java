@@ -65,7 +65,7 @@ public class RedDePetri {
 	private int[] b = new int[17];
 	private int[] ex = new int[17];
 	private Tiempo tiempo;
-	//private boolean end = false;
+	
 
 	public RedDePetri(Tiempo tiempo) {
 		calcularE();
@@ -75,11 +75,11 @@ public class RedDePetri {
 		this.tiempo = tiempo;
 	}
 
-	public boolean evaluarDisparo(int[] t) {
+	public boolean evaluarDisparo(Transicion t) {
 		boolean aviso = false;
 		int mult[] = new int[marcado.length];
 		int suma[] = new int[marcado.length];
-		int conjuncion[] = calcularConjuncion(t, ex);
+		int conjuncion[] = calcularConjuncion(t.getTransicion(), ex);
 		for (int i = 0; i < marcado.length; i++) {
 			for (int j = 0; j < 1; j++) {
 				for (int k = 0; k < 17; k++) {
@@ -147,6 +147,10 @@ public class RedDePetri {
 		calcularQ();
 		calcularB();
 		ex = calcularConjuncion(e, b);
+
+		//Setear tiempos
+		
+
 		return 1;
 	}
 	
