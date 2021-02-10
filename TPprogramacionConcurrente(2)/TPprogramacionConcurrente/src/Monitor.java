@@ -6,18 +6,12 @@ public class Monitor {
 	private RedDePetri rdp;
 	private Politica politica;
 	private Log log;
-	private int tareas;
-	private int tareas1;
-	private int tareas2;
-	private Tiempo tiempo;
-    private boolean end = true;
-    
-    /*
-        CONFLICTO TIENEN:
-        - T0 CON T8 NOMAS?
-    */
 
-	public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo) {
+	private Tiempo tiempo;
+    private Administrador administrador;
+    private InvPlazas invariante;
+
+	public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo, Administrador admin, InvPlazas invariantes) {
 		semaforo = new Semaphore(1, true);
 		semaforos = new Semaphore[17];
 		for (int i = 0; i < semaforos.length; i++) {
@@ -26,118 +20,26 @@ public class Monitor {
 		this.rdp = rdp;
 		this.politica = politica;
 		this.log = log;
-		tareas = 0;
-		tareas1 = 0;
-		tareas2 = 0;
         this.tiempo = tiempo;
+        this.administrador = admin;
+        this.invariante = invariantes;
 	}
 
-	public void disparar(int[] t) {
+	public void disparar(Transicion t) {
 		try {
 			semaforo.acquire();
-			while (end) {
+			while (!administrador.getEnd()) {
 				if (rdp.evaluarDisparo(t)) {
-					rdp.disparar(t);
-                                        int transicion = 9999;
-                                        for(int i = 0; i < 17; i++) {
-                                            if(t[i] == 1) {
-                                                switch(i) {
-                                                    case 0: transicion = 0;
-                                                        System.out.println("Se dirige al buffer 1");
-                                                        break;
-                                                    case 1: transicion = 1;
-                                                            System.out.println("Arribó una tarea al buffer 1");
-                                                            System.out.println("Elementos en el buffer 1: " + rdp.getElementosBuffer1());
-                                                            break;
-                                                    case 2: transicion = 10;
-                                                    assert Thread.currentThread().getName().equals("SERVICIO 2");
-                                                        tiempo.setTiempoActual(System.currentTimeMillis(), t);
-                                                        System.out.println(Thread.currentThread().getName() + " esta resolviendo una tarea");
-                                                            break;
-                                                    case 3: transicion = 11;
-                                                    tareas2++;
-                                                    tareas++;
-                                                        if (tareas==1000) {
-                                                            setEnd();
-                                                        }
-                                                        System.out.println(Thread.currentThread().getName() + " resolvio " + tareas2 + " tareas.");
-                                                        System.out.println(Thread.currentThread().getName() + " resolvió una tarea. Tareas resueltas: " + getTareas());
-                                                            break;
-                                                    case 4: transicion = 12;
-                                                        System.out.println(Thread.currentThread().getName() + " esta encendiendo el nucleo");
-                                                        break;
-                                                    case 5: transicion = 13;
-                                                        System.out.println(Thread.currentThread().getName() + " encendio el nucleo");
-                                                        break;
-                                                    case 6: transicion = 14;
-                                                        System.out.println(Thread.currentThread().getName() + " realizo un disparo");
-                                                            break;
-                                                    case 7: transicion = 15;
-                                                        System.out.println(Thread.currentThread().getName() + " apago el nucleo");
-                                                        break;
-                                                    case 8: transicion = 16;
-                                                        assert Thread.currentThread().getName().equals("ARRIBO"); 
-                                                        tiempo.setTiempoActual(System.currentTimeMillis(), t);
-                                                        System.out.println("Arribo una tarea");
-                                                        break;
-                                                    case 9: transicion = 2;
-                                                    assert Thread.currentThread().getName().equals("SERVICIO 1");
-                                                        tiempo.setTiempoActual(System.currentTimeMillis(), t);
-                                                        System.out.println(Thread.currentThread().getName() + " esta resolviendo una tarea");
-                                                            break;
-                                                    case 10: transicion = 3;
-                                                    tareas1++;
-                                                    tareas++;
-                                                    if (tareas==1000) {
-                                                        setEnd();
-                                                    }
-                                                        System.out.println(Thread.currentThread().getName() + " resolvio " + tareas1 + " tareas.");
-                                                        System.out.println(Thread.currentThread().getName() + " resolvió una tarea. Tareas resueltas: " + getTareas());
-                                                             break;
-                                                    case 11: transicion = 4;
-                                                        System.out.println(Thread.currentThread().getName() + " esta encendiendo el nucleo");
-                                                        break;
-                                                    case 12: transicion = 5;
-                                                        System.out.println(Thread.currentThread().getName() + " encendio el nucleo");
-                                                        break;
-                                                    case 13: transicion = 6;
-                                                        System.out.println(Thread.currentThread().getName() + " realizo un disparo");
-                                                        break;
-                                                    case 14: transicion = 7;
-                                                        System.out.println(Thread.currentThread().getName() + " apago el nucleo");
-                                                        break;
-                                                    case 15: transicion = 8;
-                                                        System.out.println("Se dirige al buffer 2");
-                                                        break;
-                                                    case 16: transicion = 9;
-                                                             System.out.println("Arribó una tarea al buffer 2");
-                                                             System.out.println("Elementos en el buffer 2: " + rdp.getElementosBuffer2());
-                                                             break;
-													default:
-														throw new IllegalStateException("Unexpected value: " + i);
-												}
-                                                break;
-                                            }
-                                        }
-                                        log.escribir(transicion + "  ");
-                                        //INVARIANTES DE PLAZA
-                                        int p1 = rdp.getMP0() + rdp.getMP1() + rdp.getMP9() + rdp.getMP17();
-                                        int p2 = rdp.getMP3() + rdp.getMP4();
-                                        int p3 = rdp.getMP5() + rdp.getMP7() + rdp.getMP8();
-                                        int p4 = rdp.getMP11() + rdp.getMP12();
-                                        int p5 = rdp.getMP13() + rdp.getMP14() + rdp.getMP16();
+					rdp.disparar(t.getTransicion());
+					log.escribir(t.getId() + "  ");
+					//INVARIANTES DE PLAZA
+					invariante.CheckInvPlazas();
 
-                                        assert p1 == 1 : String.format("Invariante 1 no cumplido");
-                                        assert p2 == 1 : String.format("Invariante 2 no cumplido");
-                                        assert p3 == 1 : String.format("Invariante 3 no cumplido");
-                                        assert p4 == 1 : String.format("Invariante 4 no cumplido");
-                                        assert p5 == 1 : String.format("Invariante 5 no cumplido");
-
-                        int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-                        //int decision = politica.resolverConflicto(sensibilizadas); //Una vez que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
-                        //int decision = politica.resolverConflictoRandom(sensibilizadas);
-                        int decision = politica.decidir(sensibilizadas);
-                        semaforos[decision].release();
+                    int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
+                    int decision = politica.decidir(sensibilizadas); //Una vex que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
+                    //int decision = politica.resolverConflictoRandom(sensibilizadas);
+					//int decision = politica.resolverConflicto(sensibilizadas);
+					semaforos[decision].release();
 					break;
 				} else {
 					semaforo.release();
@@ -153,9 +55,10 @@ public class Monitor {
 		} catch (InterruptedException e) {
 		    return;
 		} finally {
-            if (!end) {
+            if (administrador.getEnd()) {
                 for (int i = 0; i <semaforos.length ; i++) {
-                    semaforos[i].release();
+					
+                    semaforos[i].release(); 
                 }
             }
 			semaforo.release();
@@ -163,9 +66,9 @@ public class Monitor {
 		return;
 	}
 
-	private void dormir(int[] t) {
-		for (int i = 0; i < t.length; i++) {
-			if (t[i] == 1) {
+	private void dormir(Transicion t) {
+		for (int i = 0; i < t.getTransicion().length; i++) {
+			if (t.getTransicion()[i] == 1) {
                     if (tiempo.esTemporal(t)) {
                         long time = tiempo.calcularTiempo(t);
                         if (time>0) {
@@ -186,11 +89,5 @@ public class Monitor {
 		}
 	}
 
-    public int getTareas() {
-	    return tareas;
-    }
 
-    public void setEnd() {
-	    end = false;
-    }
 }

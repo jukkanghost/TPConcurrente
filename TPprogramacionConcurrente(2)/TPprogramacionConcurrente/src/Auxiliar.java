@@ -1,16 +1,19 @@
 public class Auxiliar implements Runnable{
 	private Monitor monitor;
-	private int t1[];
+	private Transicion t1;
+	private Administrador administrador;
 	
-	public Auxiliar(Monitor monitor, int[] t1) {
+	public Auxiliar(Monitor monitor, Transicion t1, Administrador admin) {
 		this.monitor=monitor;
 		this.t1 = t1;
+		administrador = admin;
 	}
 
 	@Override
 	public void run() {
-		while(monitor.getTareas()<1000) {
+		while(!administrador.getEnd()) {
 			monitor.disparar(t1);
+			System.out.println(Thread.currentThread().getName() + " realizo un disparo");
 		}
 	}
 

@@ -7,6 +7,8 @@ public class Regex {
 	private Log log;
 	private StringBuffer texto = new StringBuffer();
 
+	//No separar en grupos los invariantes
+	
 	private String invarianteTodo = "((10)(.*?)(11))|((12)(.*?)(13)(.*?)(15))|((\\s2)(.*?)(\\s3))|((16)(.*?)((\\s0)(.*?)(\\s1\\s)|(8)(.*?)(9)))|((\\s4)(.*?)(\\s5)(.*?)(7))";
 
 	List<Integer> startIndexs = new ArrayList<>();
@@ -18,6 +20,7 @@ public class Regex {
 
 	public void chequeoInvariantes() {
 		texto = log.sacarInfo();
+		
 
 		Pattern patternTodo = Pattern.compile(invarianteTodo);
 
@@ -87,12 +90,12 @@ public class Regex {
 				contadorTodo++;
 			}
 			
-
 			for (int j = startIndexs.size(); j > 0; j--) {
 				texto.delete(startIndexs.get(j - 1), endIndexs.get(j - 1));
 			}
 			startIndexs.clear();
 			endIndexs.clear();
+
 			despues = contadorTodo;
 
 			if (antes == despues) {

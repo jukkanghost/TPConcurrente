@@ -22,25 +22,47 @@ public class Main {
 		int t15[] = {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0};
 		int t16[] = {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0};
 
+		Transicion transicion0 = new Transicion(t0, 0);
+		Transicion transicion1 = new Transicion(t1, 1);
+		Transicion transicion2 = new Transicion(t2, 2);
+		Transicion transicion3 = new Transicion(t3, 3);
+		Transicion transicion4 = new Transicion(t4, 4);
+		Transicion transicion5 = new Transicion(t5, 5);
+		Transicion transicion6 = new Transicion(t6, 6);
+		Transicion transicion7 = new Transicion(t7, 7);
+		Transicion transicion8 = new Transicion(t8, 8);
+		Transicion transicion9 = new Transicion(t9, 9);
+		Transicion transicion10 = new Transicion(t10, 10);
+		Transicion transicion11 = new Transicion(t11, 11);
+		Transicion transicion12 = new Transicion(t12, 12);
+		Transicion transicion13 = new Transicion(t13, 13);
+		Transicion transicion14 = new Transicion(t14, 14);
+		Transicion transicion15 = new Transicion(t15, 15);
+		Transicion transicion16 = new Transicion(t16, 16);
+
+		Administrador administrador = new Administrador();
+
+		
 		Tiempo tiempo = new Tiempo();
 		RedDePetri rdp = new RedDePetri(tiempo);
 		Buffer buffer1 = new Buffer(rdp, 1);
 		Buffer buffer2 = new Buffer(rdp, 2);
 		Log log = new Log();
+		InvPlazas invariante = new InvPlazas(rdp);
 		Politica politica = new Politica(buffer1, buffer2, rdp);
-		Monitor monitor = new Monitor(rdp, politica, log, tiempo);
+		Monitor monitor = new Monitor(rdp, politica, log, tiempo, administrador, invariante);
 		Regex regex = new Regex(log);
 
 
-		Encendido encendido1 = new Encendido(monitor, t4, t5, t7);
-		Encendido encendido2 = new Encendido(monitor, t12, t13, t15);
-		Auxiliar auxiliar1 = new Auxiliar(monitor, t6);
-		Auxiliar auxiliar2 = new Auxiliar(monitor, t14);
-		Servicio servicio1 = new Servicio(monitor, t2, t3);
-		Servicio servicio2 = new Servicio(monitor, t10, t11);
-		Arribo arribo = new Arribo(monitor, t16);
-		aBuffer aBuffer1 = new aBuffer(t0, t1, monitor);
-		aBuffer aBuffer2 = new aBuffer(t8, t9, monitor);
+		Encendido encendido1 = new Encendido(monitor, transicion4, transicion5, transicion7, administrador);
+		Encendido encendido2 = new Encendido(monitor, transicion12, transicion13, transicion15, administrador);
+		Auxiliar auxiliar1 = new Auxiliar(monitor, transicion6, administrador);
+		Auxiliar auxiliar2 = new Auxiliar(monitor, transicion14, administrador);
+		Servicio servicio1 = new Servicio(monitor, transicion2, transicion3, administrador, tiempo);
+		Servicio servicio2 = new Servicio(monitor, transicion10, transicion11, administrador, tiempo);
+		Arribo arribo = new Arribo(monitor, transicion16, administrador, tiempo);
+		aBuffer aBuffer1 = new aBuffer(transicion0, transicion1, monitor, administrador, buffer1);
+		aBuffer aBuffer2 = new aBuffer(transicion8, transicion9, monitor, administrador, buffer2);
 		
 		Thread enc1 = new Thread(encendido1);
 		enc1.setName("ENCENDIDO 1");
@@ -76,25 +98,30 @@ public class Main {
 			e.printStackTrace();
 		}
 
+		
+		ar.interrupt();
+		ab1.interrupt();
+		ab2.interrupt();
 		enc1.interrupt();
 		enc2.interrupt();
 		aux1.interrupt();
 		aux2.interrupt();
-		ar.interrupt();
-		ab1.interrupt();
-		ab2.interrupt();
-
+		
+		
 		long endTime = System.nanoTime() - startTime;
 		int milisegundos = (int) (endTime/1e6) ;
 		int segundos = (int) (endTime / 1e9);
 		int minutos = (int) (segundos / 60);
 		segundos = segundos - minutos * 60;
 		milisegundos = milisegundos - segundos*1000;
+		
 		System.out.println("\n\n");
 		log.cerrar();
 		regex.chequeoInvariantes();
 		
 		System.out.println("\n-----FIN DEL MAIN-----");
 		System.out.println("Duracion: " + minutos + " minutos, " + segundos + " segundos, " + milisegundos + "milisegundos");
+
 	}
+	
 }

@@ -1,21 +1,27 @@
 public class aBuffer implements Runnable {
     
     private Monitor monitor;
-    private int t1[];
-    private int t2[];
-    private String buffer;
+    private Transicion t1;
+    private Transicion t2;
+    private Administrador administrador;
+    private Buffer buffer;
     
-    public aBuffer(int t1[], int t2[], Monitor monitor) {
+    public aBuffer(Transicion t1, Transicion t2, Monitor monitor, Administrador admin, Buffer buffer) {
         this.t1 = t1;
         this.t2 = t2;
         this.monitor = monitor;
+        administrador = admin;
+        this.buffer = buffer;
     }
     
     @Override
     public void run() {
-        while(monitor.getTareas()<1000) {
+        while(!administrador.getEnd()) {
             monitor.disparar(t1);
+            System.out.println("Se dirige al buffer " + buffer.getId());
             monitor.disparar(t2);
+            System.out.println("Arribó una tarea al buffer " + buffer.getId());
+            System.out.println("Elementos en el buffer " + buffer.getId() + ": " + buffer.getElementos());
         }
     }
 }
