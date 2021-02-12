@@ -1,12 +1,16 @@
 public class Tiempo {
-    private int []tiempo = {0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 10};
+    private int []tiempo = {0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 10};
     private long []tiempoInicial = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     public Tiempo() {
     }
 
-    public void setTiempoActual (long tiempo, Transicion transicion) {
-       tiempoInicial[transicion.getId()] = tiempo;
+    public void setTiempoActual (long tiempo, int transicion) {
+       tiempoInicial[transicion] = tiempo;
         return;
+    }
+
+    public long getTiempoInicial (Transicion transicion) {
+        return tiempoInicial[transicion.getId()];
     }
 
     public boolean esTemporal (Transicion transicion) {

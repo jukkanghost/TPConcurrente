@@ -30,7 +30,7 @@ public class Monitor {
 			semaforo.acquire();
 			while (!administrador.getEnd()) {
 				if (rdp.evaluarDisparo(t)) {
-					rdp.disparar(t.getTransicion());
+					rdp.disparar(t);
 					log.escribir(t.getId() + "  ");
 					//INVARIANTES DE PLAZA
 					invariante.CheckInvPlazas();
@@ -49,15 +49,13 @@ public class Monitor {
                     } catch (Exception exit) {
 					    break;
                     }
-
                 }
 			}
 		} catch (InterruptedException e) {
 		    return;
 		} finally {
             if (administrador.getEnd()) {
-                for (int i = 0; i <semaforos.length ; i++) {
-					
+                for (int i = 0; i <semaforos.length ; i++) {	
                     semaforos[i].release(); 
                 }
             }
@@ -67,27 +65,28 @@ public class Monitor {
 	}
 
 	private void dormir(Transicion t) {
-		for (int i = 0; i < t.getTransicion().length; i++) {
-			if (t.getTransicion()[i] == 1) {
                     if (tiempo.esTemporal(t)) {
                         long time = tiempo.calcularTiempo(t);
                         if (time>0) {
                             try {
                                 Thread.sleep(time);
-                            } catch (InterruptedException exit) {
-                                break;
+                            } catch (InterruptedException exit) {   
+
                             }
                         }
                     }
                     try {
-                        semaforos[i].acquire();
-                    } catch (InterruptedException exit) {
-                        break;
-                    }
-				break;
+						for (int i = 0; i < t.getTransicion().length; i++) {
+							if (t.getTransicion()[i] == 1) {
+                        		semaforos[i].acquire();
+							}
+						}
+                    } catch (InterruptedException exit) { 
+
+                    }			
 			}
-		}
-	}
+		
+	
 
 
 }

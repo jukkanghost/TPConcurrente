@@ -115,11 +115,11 @@ public class RedDePetri {
 		return true;
 	}
 	
-	public int disparar(int[] t) {
+	public int disparar(Transicion t) {
 		boolean aviso = false;
 		int mult[] = new int[marcado.length];
 		int suma[] = new int[marcado.length];
-		int conjuncion[] = calcularConjuncion(t, ex);
+		int conjuncion[] = calcularConjuncion(t.getTransicion(), ex);
 		for (int i = 0; i < marcado.length; i++) {
 			for (int j = 0; j < 1; j++) {
 				for (int k = 0; k < 17; k++) {
@@ -149,7 +149,9 @@ public class RedDePetri {
 		ex = calcularConjuncion(e, b);
 
 		//Setear tiempos
-		
+		if (tiempo.esTemporal(t)) {
+				tiempo.setTiempoActual(System.currentTimeMillis(), t.getId());		
+		}
 
 		return 1;
 	}

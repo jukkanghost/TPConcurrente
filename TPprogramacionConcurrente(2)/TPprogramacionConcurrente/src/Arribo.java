@@ -15,7 +15,7 @@ public class Arribo implements Runnable {
 	public void run() {
 		while(!administrador.getEnd()) {
 				monitor.disparar(t);
-			    tiempo.setTiempoActual(System.currentTimeMillis(), t);
+			    //tiempo.setTiempoActual(System.currentTimeMillis(), t.getId());
 			    System.out.println("Arribo una tarea");
 			}
 		}
