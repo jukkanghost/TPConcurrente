@@ -13,9 +13,9 @@ public class Arribo implements Runnable {
 
 	@Override
 	public void run() {
-		while(!administrador.getEnd()) {
+		while(administrador.getTareas()<administrador.getTareasCompletadas()) {
 				monitor.disparar(t);
-			    //tiempo.setTiempoActual(System.currentTimeMillis(), t);
+			    tiempo.setTiempoActual(System.currentTimeMillis(), t.getTransicion());
 			    System.out.println("Arribo una tarea");
 			}
 		}

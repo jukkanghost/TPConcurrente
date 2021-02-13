@@ -1,28 +1,47 @@
 public class Tiempo {
-    private int []tiempo = {0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 10};
+    private int []tiempo = {0, 0, 20, 0, 0, 0, 0, 0, 10, 20, 0, 0, 0, 0, 0, 0, 0};
     private long []tiempoInicial = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    //private int []temporales = {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
-
+    // Transiciones = ( 0 - 1 - 10 - 11 - 12 - 13 - 14 - 15 - 16 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 - nada)
     public Tiempo() {
+
     }
 
-    public void setTiempoActual (long tiempo, int transicion) {
-        tiempoInicial[transicion] = tiempo;
+    public void setTiempoActual (long tiempo, int []transicion) {
+        for (int i = 0; i <transicion.length ; i++) {
+            if (transicion[i] == 1) {
+                tiempoInicial[i] = tiempo;
+            }
+        }
         return;
     }
 
-    public boolean esTemporal (Transicion transicion) {
+    public boolean esTemporal (int []transicion) {
         boolean temp = false;
-        if (tiempo[transicion.getId()] > 0) {
-            temp = true;
+        for (int i = 0; i <transicion.length ; i++) {
+            if (transicion[i] == 1) {
+                if (tiempo[i]>0) {
+                temp = true;
+                break;
+                }
+            }
         }
         return temp;
     }
 
-    public long calcularTiempo(Transicion transicion) {
-        long tiempoinicial = tiempoInicial[transicion.getId()];
+    public long calcularTiempo(int []transicion) {
+        int t = 0;
+        if (Thread.currentThread().getName().equals("ARRIBO")) {
+            t = 8;
+        }
+        if (Thread.currentThread().getName().equals("SERVICIO 1")) {
+            t = 9;
+        }
+        if (Thread.currentThread().getName().equals("SERVICIO 2")) {
+            t = 2;
+        }
+        long tiempoinicial = tiempoInicial[t];
         long tiempofinal = System.currentTimeMillis() - tiempoinicial;
-        long tiemporestante = tiempo[transicion.getId()] - tiempofinal;
+        long tiemporestante = tiempo[t] - tiempofinal;
         return tiemporestante;
     }
 
@@ -32,18 +51,4 @@ public class Tiempo {
             System.out.print(tiempoInicial[i] + " ");
         }
     }
-
-    public boolean esTemporal2 (int transicion) {
-        boolean temp = false;
-                if (tiempo[transicion]>0) {
-                temp = true;
-                }
-        return temp;
-    }
-
-    public long getTiempoInicial (int transicion) {
-        return tiempoInicial[transicion];
-    }
-
-    
 }

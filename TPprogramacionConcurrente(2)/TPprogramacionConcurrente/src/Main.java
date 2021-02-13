@@ -3,7 +3,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		long startTime = System.nanoTime();
-		
+
 		int t0[] = {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 		int t1[] = {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 		int t2[] = {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0};
@@ -42,7 +42,7 @@ public class Main {
 
 		Administrador administrador = new Administrador();
 
-		
+
 		Tiempo tiempo = new Tiempo();
 		RedDePetri rdp = new RedDePetri(tiempo);
 		Buffer buffer1 = new Buffer(rdp, 1);
@@ -63,7 +63,7 @@ public class Main {
 		Arribo arribo = new Arribo(monitor, transicion16, administrador, tiempo);
 		aBuffer aBuffer1 = new aBuffer(transicion0, transicion1, monitor, administrador, buffer1);
 		aBuffer aBuffer2 = new aBuffer(transicion8, transicion9, monitor, administrador, buffer2);
-		
+
 		Thread enc1 = new Thread(encendido1);
 		enc1.setName("ENCENDIDO 1");
 		Thread enc2 = new Thread(encendido2);
@@ -79,8 +79,8 @@ public class Main {
 		Thread ar = new Thread(arribo);
 		ar.setName("ARRIBO");
 		Thread ab1 = new Thread(aBuffer1);
-        Thread ab2 = new Thread(aBuffer2);
-		
+		Thread ab2 = new Thread(aBuffer2);
+
 		enc1.start();
 		enc2.start();
 		aux1.start();
@@ -98,30 +98,25 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		
-		ar.interrupt();
-		ab1.interrupt();
-		ab2.interrupt();
 		enc1.interrupt();
 		enc2.interrupt();
 		aux1.interrupt();
 		aux2.interrupt();
-		
-		
+		ar.interrupt();
+		ab1.interrupt();
+		ab2.interrupt();
+
+
 		long endTime = System.nanoTime() - startTime;
-		int milisegundos = (int) (endTime/1e6) ;
 		int segundos = (int) (endTime / 1e9);
 		int minutos = (int) (segundos / 60);
 		segundos = segundos - minutos * 60;
-		milisegundos = milisegundos - segundos*1000;
-		
+
 		System.out.println("\n\n");
 		log.cerrar();
 		regex.chequeoInvariantes();
-		
-		System.out.println("\n-----FIN DEL MAIN-----");
-		System.out.println("Duracion: " + minutos + " minutos, " + segundos + " segundos, " + milisegundos + "milisegundos");
 
+		System.out.println("\n-----FIN DEL MAIN-----");
+		System.out.println("Duracion: " + minutos + " minutos, " + segundos + " segundos");
 	}
-	
 }

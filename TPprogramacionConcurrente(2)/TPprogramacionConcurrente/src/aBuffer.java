@@ -3,6 +3,7 @@ public class aBuffer implements Runnable {
     private Monitor monitor;
     private Transicion t1;
     private Transicion t2;
+    //private String buffer;
     private Administrador administrador;
     private Buffer buffer;
     
@@ -16,12 +17,14 @@ public class aBuffer implements Runnable {
     
     @Override
     public void run() {
-        while(!administrador.getEnd()) {
+        while(administrador.getTareas()<administrador.getTareasCompletadas()) {
             monitor.disparar(t1);
             System.out.println("Se dirige al buffer " + buffer.getId());
-            monitor.disparar(t2);
-            System.out.println("Arribó una tarea al buffer " + buffer.getId());
-            System.out.println("Elementos en el buffer " + buffer.getId() + ": " + buffer.getElementos());
+            if (administrador.getTareas()<administrador.getTareasCompletadas()) {
+                monitor.disparar(t2);
+                System.out.println("Arribó una tarea al buffer " + buffer.getId());
+                System.out.println("Elementos en el buffer " + buffer.getId() + ": " + buffer.getElementos());
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ public class Encendido implements Runnable{
 
 	@Override
 	public void run() {
-		while(!administrador.getEnd()) {
+		while(administrador.getTareas()<administrador.getTareasCompletadas()) {
 			monitor.disparar(t1);
 			System.out.println(Thread.currentThread().getName() + " esta encendiendo el nucleo");
 			monitor.disparar(t2);
