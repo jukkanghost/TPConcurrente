@@ -139,19 +139,18 @@ public class RedDePetri {
 		calcularQ();
 		calcularB();
 		ex = calcularConjuncion(e, b);
-
+		
+		
 		//resetear sensi
-		if (tiempo.esTemporal(t)) {
-			tiempo.setSensibilizada(t, 1);
-		}
-
+		
+		
 		// Setear tiempos
-		if (tiempo.getSensibilizada(t.getId())) {
+		
 			if (tiempo.esTemporal(t)) {
 				tiempo.setTiempoActual(System.currentTimeMillis(), t.getId());
-				tiempo.setSensibilizada(t, 0);
+				
 			}
-		}
+		
 		return 1;
 	}
 
@@ -284,6 +283,15 @@ public class RedDePetri {
 			}
 		}
 		return tSensibilizadas;
+	}
+
+	public int[] traductor(int []sensibilizadas) {
+		int [] traduc = {0, 1, 10, 11, 12, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		int [] devolver = {};
+		for (int i = 0; i < sensibilizadas.length; i++) {
+			devolver[i] = traduc[sensibilizadas[i]];
+		}
+		return devolver;	
 	}
 
 }
