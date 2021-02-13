@@ -1,31 +1,33 @@
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Administrador {
     private boolean end;
     private int tareas;
+    ReentrantReadWriteLock locki;
 
     private static final int TAREAS_COMPLETADAS = 1000;
-
-    //private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    //private final Lock read = readWriteLock.readLock();
-    //private final Lock write = readWriteLock.writeLock();
 
     public Administrador() {
         end = false;
         tareas = 0;
+        locki = new ReentrantReadWriteLock();
     }
 
-    public synchronized int getTareas() {
-               return tareas;
+    public int getTareas() {
+        locki.readLock().lock();
+        int ret = tareas;
+        locki.readLock().unlock();
+        return ret;
     }
 
-    public synchronized void tareaCompetada() {
-            if (tareas == TAREAS_COMPLETADAS) {
-                setEnd();
-            } else {
-                tareas++;
-            }
+    public void tareaCompetada() {
+        locki.writeLock().lock();
+        if (tareas == TAREAS_COMPLETADAS) {
+            setEnd();
+        } else {
+            tareas++;
+        }
+        locki.writeLock().unlock();
     }
 
     public void setEnd() {
