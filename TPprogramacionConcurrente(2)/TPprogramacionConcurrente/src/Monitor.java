@@ -37,21 +37,16 @@ public class Monitor {
 					invariante.CheckInvPlazas();
 
                     int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-					System.out.println("Sensibilizadas");
-					for (int i = 0; i < sensibilizadas.length; i++) {
-						System.out.println(sensibilizadas[i]);	
-					}
-                    List<Integer> salidaTraducida = rdp.traductor(sensibilizadas);
-                    System.out.println("Traduccion");
-                    for (int i = 0; i < salidaTraducida.size(); i++) {
-                        System.out.println(salidaTraducida.get(i));
-                    }
+					
                     int decision = politica.decidir(sensibilizadas); //Una vex que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
                     //int decision = politica.resolverConflictoRandom(sensibilizadas);
 					//int decision = politica.resolverConflicto(sensibilizadas);
 					semaforos[decision].release();
 					break;
 				} else {
+                    int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
+                    int decision = politica.decidir(sensibilizadas);
+                    semaforos[decision].release();
 					semaforo.release();
 					dormir(t);
 					try {

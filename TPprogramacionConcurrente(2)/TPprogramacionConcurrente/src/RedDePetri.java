@@ -63,6 +63,7 @@ public class RedDePetri {
 	private int[] ex = new int[17];
 	private Tiempo tiempo;
 
+
 	public RedDePetri(Tiempo tiempo) {
 		calcularE();
 		calcularQ();
@@ -144,19 +145,31 @@ public class RedDePetri {
 		ex = calcularConjuncion(e, b);
 		
 		
-		//resetear sensi
+		//aviso que ya disparo, entonces ya se puede setear el tiempo de vuelta
+		if(tiempo.esTemporal(t)) {
+			tiempo.setTemporizada(t.getId(), 0);
+		}
 
-		
-		
-		// Setear tiempos
-		
-			if (tiempo.esTemporal(t)) {
-				tiempo.setTiempoActual(System.currentTimeMillis(), t.getId());
-				
+		//Obtengo las transiciones sensibilizadas por el disparo y las temporales
+		int [] sensibilizadas = getTransicionesSensibilizadas();
+		List<Integer> sensibilizadasTraducidas = traductor(sensibilizadas);
+		List<Integer> temporales = tiempo.getTemporales();
+		//y me fijo si alguna temporal fue sensibilizada por el disparo para marcar el tiempo
+		for (int i = 0; i < temporales.size(); i++) {
+			int temp = temporales.get(i);
+			for (int j = 0; j < sensibilizadasTraducidas.size(); j++) {
+				if(sensibilizadasTraducidas.get(j) == temp) {
+					if(!tiempo.getTemporizada(temp)){
+						tiempo.setTiempoDeSensibilizado(System.currentTimeMillis(), temp);
+						tiempo.setTemporizada(temp, 1);
+					}
+				}
 			}
-		
+		}
 		return 1;
 	}
+
+	
 
 	private void calcularE() {
 		for (int i = 0; i < 17; i++) {
@@ -298,4 +311,5 @@ public class RedDePetri {
 		return devolver;	
 	}
 
+	
 }

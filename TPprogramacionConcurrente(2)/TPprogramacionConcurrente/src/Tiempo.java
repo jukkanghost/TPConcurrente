@@ -1,26 +1,42 @@
+import java.util.List;
+import java.util.ArrayList;
+
+
 public class Tiempo {
     private int []tiempo = {0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 10};
-    private long []tiempoInicial = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    private int [] sensibilizada = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    private long []tiempoDeSensibilizado = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private int []temporizada = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
 
     public Tiempo() {
     }
 
-    public void setSensibilizada (Transicion t, int valor) {
-        sensibilizada[t.getId()] = valor;
+    public List<Integer> getTemporales() {
+        List <Integer> devolver = new ArrayList<Integer>();
+        for (int i = 0; i < tiempo.length; i++) {
+            if (tiempo[i] > 0) {
+                devolver.add(i);
+            }
+        }
+        return devolver;
     }
 
-    public boolean getSensibilizada (int t) {
-        return sensibilizada[t] == 1;
+
+    public void setTemporizada (int t, int valor) {
+        temporizada[t] = valor;
     }
 
-    public void setTiempoActual (long tiempo, int transicion) {
-       tiempoInicial[transicion] = tiempo;
+    public boolean getTemporizada (int t) {
+        return temporizada[t] == 1;
+    }
+
+    public void setTiempoDeSensibilizado (long tiempo, int transicion) {
+       tiempoDeSensibilizado[transicion] = tiempo;
         return;
     }
 
-    public long getTiempoInicial (Transicion transicion) {
-        return tiempoInicial[transicion.getId()];
+    public long getTiempoDeSensibilizado (Transicion transicion) {
+        return tiempoDeSensibilizado[transicion.getId()];
     }
 
     public boolean esTemporal (Transicion transicion) {
@@ -32,16 +48,10 @@ public class Tiempo {
     }
 
     public long calcularTiempo(Transicion transicion) {
-        long tiempoinicial = tiempoInicial[transicion.getId()];
-        long tiempofinal = System.currentTimeMillis() - tiempoinicial;
+        long tiempodesensibilizado = tiempoDeSensibilizado[transicion.getId()];
+        long tiempofinal = System.currentTimeMillis() - tiempodesensibilizado;
         long tiemporestante = tiempo[transicion.getId()] - tiempofinal;
         return tiemporestante;
     }
 
-    public void displayTiempo() {
-        System.out.println("Tiempo iniciales");
-        for (int i = 0; i < tiempoInicial.length; i++) {
-            System.out.print(tiempoInicial[i] + " ");
-        }
-    }
 }
