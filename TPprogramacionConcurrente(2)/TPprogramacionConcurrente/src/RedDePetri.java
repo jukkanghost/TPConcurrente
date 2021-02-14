@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class RedDePetri {
 	private int[][] matrizIncidencia = { { -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0 },
 			{ 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -142,6 +145,7 @@ public class RedDePetri {
 		
 		
 		//resetear sensi
+
 		
 		
 		// Setear tiempos
@@ -285,11 +289,11 @@ public class RedDePetri {
 		return tSensibilizadas;
 	}
 
-	public int[] traductor(int []sensibilizadas) {
-		int [] traduc = {0, 1, 10, 11, 12, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-		int [] devolver = {};
+	public List<Integer> traductor(int []sensibilizadas) {
+		int [] traduc = {0, 1, 10, 11, 12, 13, 14, 15, 16, 2, 3, 4, 5, 6, 7, 8, 9};
+		List <Integer> devolver = new ArrayList<Integer>();
 		for (int i = 0; i < sensibilizadas.length; i++) {
-			devolver[i] = traduc[sensibilizadas[i]];
+			devolver.add(traduc[sensibilizadas[i]]);
 		}
 		return devolver;	
 	}
