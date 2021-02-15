@@ -143,8 +143,11 @@ public class RedDePetri {
 		calcularQ();
 		calcularB();
 		ex = calcularConjuncion(e, b);
-		
-		
+		SetearTiempos(t);
+		return 1;
+	}
+
+	private void SetearTiempos (Transicion t) {
 		//aviso que ya disparo, entonces ya se puede setear el tiempo de vuelta
 		if(tiempo.esTemporal(t)) {
 			tiempo.setTemporizada(t.getId(), 0);
@@ -166,7 +169,6 @@ public class RedDePetri {
 				}
 			}
 		}
-		return 1;
 	}
 
 	

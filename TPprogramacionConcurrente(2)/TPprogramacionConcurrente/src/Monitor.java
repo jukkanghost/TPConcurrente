@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Monitor {
@@ -9,10 +8,11 @@ public class Monitor {
 	private Log log;
 
 	private Tiempo tiempo;
-    private Administrador administrador;
-    private InvPlazas invariante;
+	private Administrador administrador;
+	private InvPlazas invariante;
 
-	public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo, Administrador admin, InvPlazas invariantes) {
+	public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo, Administrador admin,
+			InvPlazas invariantes) {
 		semaforo = new Semaphore(1, true);
 		semaforos = new Semaphore[17];
 		for (int i = 0; i < semaforos.length; i++) {
@@ -21,9 +21,9 @@ public class Monitor {
 		this.rdp = rdp;
 		this.politica = politica;
 		this.log = log;
-        this.tiempo = tiempo;
-        this.administrador = admin;
-        this.invariante = invariantes;
+		this.tiempo = tiempo;
+		this.administrador = admin;
+		this.invariante = invariantes;
 	}
 
 	public void disparar(Transicion t) {
@@ -33,65 +33,64 @@ public class Monitor {
 				if (rdp.evaluarDisparo(t)) {
 					rdp.disparar(t);
 					log.escribir(t.getId() + "  ");
-					//INVARIANTES DE PLAZA
+					// INVARIANTES DE PLAZA
 					invariante.CheckInvPlazas();
 
-                    int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-					
-                    int decision = politica.decidir(sensibilizadas); //Una vex que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
-                    //int decision = politica.resolverConflictoRandom(sensibilizadas);
-					//int decision = politica.resolverConflicto(sensibilizadas);
+					int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
+
+					int decision = politica.decidir(sensibilizadas); // Una vex que tengo la decisión, despierto a la
+																		// transici+on elegida (en el vector de
+																		// semáforos)
+					// int decision = politica.resolverConflictoRandom(sensibilizadas);
+					// int decision = politica.resolverConflicto(sensibilizadas);
 					semaforos[decision].release();
 					break;
 				} else {
-                    int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-                    int decision = politica.decidir(sensibilizadas);
-                    semaforos[decision].release();
 					semaforo.release();
 					dormir(t);
 					try {
-                        semaforo.acquire();
-                    } catch (Exception exit) {
-					    break;
-                    }
-                }
+						semaforo.acquire();
+					} catch (Exception exit) {
+						break;
+					}
+				}
 			}
 		} catch (InterruptedException e) {
-		    return;
+			return;
 		} finally {
-            if (administrador.getEnd()) {
-                for (int i = 0; i <semaforos.length ; i++) {	
-                    semaforos[i].release(); 
-                }
-            }
+			if (administrador.getEnd()) {
+				for (int i = 0; i < semaforos.length; i++) {
+					semaforos[i].release();
+				}
+			}
 			semaforo.release();
 		}
 		return;
 	}
 
 	private void dormir(Transicion t) {
-                    if (tiempo.esTemporal(t)) {
-                        long time = tiempo.calcularTiempo(t);
-                        if (time>0) {
-                            try {
-                                Thread.sleep(time);
-                            } catch (InterruptedException exit) {   
+		if (tiempo.esTemporal(t)) {
+			long time = tiempo.calcularTiempo(t);
+			if (time > 0) {
+				try {
+					Thread.sleep(time);
 
-                            }
-                        }
-                    }
-                    try {
-						for (int i = 0; i < t.getTransicion().length; i++) {
-							if (t.getTransicion()[i] == 1) {
-                        		semaforos[i].acquire();
-							}
-						}
-                    } catch (InterruptedException exit) { 
+				} catch (InterruptedException exit) {
 
-                    }			
+				}
 			}
-		
-	
+		}
+		if (!tiempo.esTemporal(t)) {
+			try {
+				for (int i = 0; i < t.getTransicion().length; i++) {
+					if (t.getTransicion()[i] == 1) {
+						semaforos[i].acquire();
+					}
+				}
+			} catch (InterruptedException exit) {
 
+			}
+		}
+	}
 
 }

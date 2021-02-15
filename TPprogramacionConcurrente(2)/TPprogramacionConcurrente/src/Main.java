@@ -58,9 +58,9 @@ public class Main {
 		Encendido encendido2 = new Encendido(monitor, transicion12, transicion13, transicion15, administrador);
 		Auxiliar auxiliar1 = new Auxiliar(monitor, transicion6, administrador);
 		Auxiliar auxiliar2 = new Auxiliar(monitor, transicion14, administrador);
-		Servicio servicio1 = new Servicio(monitor, transicion2, transicion3, administrador, tiempo);
-		Servicio servicio2 = new Servicio(monitor, transicion10, transicion11, administrador, tiempo);
-		Arribo arribo = new Arribo(monitor, transicion16, administrador, tiempo);
+		Servicio servicio1 = new Servicio(monitor, transicion2, transicion3, administrador);
+		Servicio servicio2 = new Servicio(monitor, transicion10, transicion11, administrador);
+		Arribo arribo = new Arribo(monitor, transicion16, administrador);
 		aBuffer aBuffer1 = new aBuffer(transicion0, transicion1, monitor, administrador, buffer1);
 		aBuffer aBuffer2 = new aBuffer(transicion8, transicion9, monitor, administrador, buffer2);
 		
@@ -114,7 +114,8 @@ public class Main {
 		int minutos = (int) (segundos / 60);
 		segundos = segundos - minutos * 60;
 		milisegundos = milisegundos - segundos*1000;
-		
+		milisegundos = milisegundos - minutos*60*1000;
+
 		System.out.println("\n\n");
 		log.cerrar();
 		regex.chequeoInvariantes();
