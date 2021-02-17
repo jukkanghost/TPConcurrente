@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -51,7 +54,23 @@ public class Main {
 		InvPlazas invariante = new InvPlazas(rdp);
 		Politica politica = new Politica(buffer1, buffer2, rdp);
 		Monitor monitor = new Monitor(rdp, politica, log, tiempo, administrador, invariante);
-		Regex regex = new Regex(log);
+
+
+		List<InvTransicion> listaInvariantes = new ArrayList<>();
+		//Tinvariantes
+		int [] gruposInvariante1 = {1, 5, 7, 11, 13, 15, 17, 19};
+		InvTransicion invariante1 = new InvTransicion("invariante1", gruposInvariante1);
+		int [] gruposInvariante2 = {1, 5, 7, 21, 23, 25};
+		InvTransicion invariante2 = new InvTransicion("invariante2", gruposInvariante2);
+		int [] gruposInvariante3 = {1, 27, 29, 33, 35, 37, 39, 41};
+		InvTransicion invariante3 = new InvTransicion("invariante3", gruposInvariante3);
+		int [] gruposInvariante4 = {1, 27, 29, 43, 45, 47};
+		InvTransicion invariante4 = new InvTransicion("invariante4", gruposInvariante4);
+		listaInvariantes.add(invariante1);
+		listaInvariantes.add(invariante2);
+		listaInvariantes.add(invariante3);
+		listaInvariantes.add(invariante4);
+		Regex regex = new Regex(log, listaInvariantes);
 
 
 		Encendido encendido1 = new Encendido(monitor, transicion4, transicion5, transicion7, administrador);
@@ -63,6 +82,7 @@ public class Main {
 		Arribo arribo = new Arribo(monitor, transicion16, administrador);
 		aBuffer aBuffer1 = new aBuffer(transicion0, transicion1, monitor, administrador, buffer1);
 		aBuffer aBuffer2 = new aBuffer(transicion8, transicion9, monitor, administrador, buffer2);
+
 		
 		Thread enc1 = new Thread(encendido1);
 		enc1.setName("ENCENDIDO 1");

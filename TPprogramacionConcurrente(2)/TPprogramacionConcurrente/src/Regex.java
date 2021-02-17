@@ -14,14 +14,13 @@ public class Regex {
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
-	private int contadorinv1 = 0;
-	private int contadorinv2 = 0;
-	private int contadorinv3 = 0;
-	private int contadorinv4 = 0;
+	List<InvTransicion> listaInvariantes = new ArrayList<>();
+	private int[] contadores = {0, 0, 0, 0};
 	private int contadorTodo = 0;
 
-	public Regex(Log log) {
+	public Regex(Log log, List<InvTransicion> listaInvariantes) {
 		this.log = log;
+		this.listaInvariantes = listaInvariantes;
 	}
 
 	public void chequeoInvariantes() {
@@ -41,45 +40,11 @@ public class Regex {
 			Matcher matcherExpresionRegular = patternTodo.matcher(invariantes);
 
 			while (matcherExpresionRegular.find()) { //mientras que la expresion regular haga match
-				if (matcherExpresionRegular.group(1) != null) {
-					LlenarListaInvariantes(matcherExpresionRegular,1);
-					if (matcherExpresionRegular.group(4) != null) {
-						LlenarListaInvariantes(matcherExpresionRegular, 5);
-						LlenarListaInvariantes(matcherExpresionRegular, 7);
-						if (matcherExpresionRegular.group(10) != null) { //aqui se ha encontrado el invariante 1
-							contadorinv1++;
-							LlenarListaInvariantes(matcherExpresionRegular, 11);
-							LlenarListaInvariantes(matcherExpresionRegular, 13);
-							LlenarListaInvariantes(matcherExpresionRegular, 15);
-							LlenarListaInvariantes(matcherExpresionRegular, 17);
-							LlenarListaInvariantes(matcherExpresionRegular, 19);
-						} else if (matcherExpresionRegular.group(20) != null) { //aqui se ha encontrado el invariante 2
-							contadorinv2++;
-							LlenarListaInvariantes(matcherExpresionRegular, 21);
-							LlenarListaInvariantes(matcherExpresionRegular, 23);
-							LlenarListaInvariantes(matcherExpresionRegular, 25);
-						}
-					} else if (matcherExpresionRegular.group(26) != null) {
-						LlenarListaInvariantes(matcherExpresionRegular, 27);
-						LlenarListaInvariantes(matcherExpresionRegular, 29);
-						if (matcherExpresionRegular.group(32) != null) { //aqui se ha encontrado el invariante 3
-							contadorinv3++;
-							LlenarListaInvariantes(matcherExpresionRegular, 33);
-							LlenarListaInvariantes(matcherExpresionRegular, 35);
-							LlenarListaInvariantes(matcherExpresionRegular, 37);
-							LlenarListaInvariantes(matcherExpresionRegular, 39);
-							LlenarListaInvariantes(matcherExpresionRegular, 41);
-						} else if (matcherExpresionRegular.group(42) != null) { //aqui se ha encontrado el invariante 4
-							contadorinv4++;
-							LlenarListaInvariantes(matcherExpresionRegular, 43);
-							LlenarListaInvariantes(matcherExpresionRegular, 45);
-							LlenarListaInvariantes(matcherExpresionRegular, 47);
-						}
-					}
-					contadorTodo++;
-				}
+				int invarianteMatcheado = invarianteMatch(matcherExpresionRegular);
+				contadores[invarianteMatcheado] = contadores[invarianteMatcheado] + 1;
+				LlenarListaInvariantes(matcherExpresionRegular, listaInvariantes.get(invarianteMatcheado));
+				contadorTodo++;
 			}
-			
 			QuitarListaInvariantes();
 
 			despues = contadorTodo;
@@ -90,12 +55,33 @@ public class Regex {
 
 		}
 
-		System.out.println("invariante 1 " + contadorinv1);
-		System.out.println("invariante 2 " + contadorinv2);
-		System.out.println("invariante 3 " + contadorinv3);
-		System.out.println("invariante 4 " + contadorinv4);
+		//imprimir contadores
+		for (int i = 0; i < contadores.length; i++) {
+			System.out.println("invariante " + i + ": " + contadores[i]);
+		}
 
 		log.escribirLog(invariantes);
+	}
+
+	private int invarianteMatch (Matcher matcherExpresionRegular) {//me fijo que invariante matcheo y lo devuelvo
+		int inv = 0;
+		for (int i = 0; i < listaInvariantes.size(); i++) {
+			int contador = 0;
+			//System.out.println("invariante " + i + " buscando");
+			int [] grupos = listaInvariantes.get(i).getGrupos();
+			for (int j = 0; j < grupos.length; j++) {
+				if (matcherExpresionRegular.group(grupos[j]) != null) {
+					//System.out.println("grupo " + grupos[j] + " encontrado");
+					contador++;
+				}
+			}
+			if (contador==grupos.length) {
+				inv = i;
+				break;
+			}
+		}
+		//System.out.println("invariante encontrado es : " + inv);
+		return inv;
 	}
 
 	private void QuitarListaInvariantes () { //elimina los invariantes ya encontrados con los indices de la lista
@@ -106,9 +92,13 @@ public class Regex {
 		endIndexs.clear();
 	}
 
-	private void LlenarListaInvariantes (Matcher matcherExpresionRegular, int group) { //agrega los indices de los invariantes encontrados a la lista
-		startIndexs.add(matcherExpresionRegular.start(group));
-		endIndexs.add(matcherExpresionRegular.end(group));
+	private void LlenarListaInvariantes (Matcher matcherExpresionRegular, InvTransicion invariante) { //agrega los indices de los invariantes encontrados a la lista
+		int[] grupos = invariante.getGrupos();
+		for (int i = 0; i < grupos.length; i++) {
+			startIndexs.add(matcherExpresionRegular.start(grupos[i]));
+			endIndexs.add(matcherExpresionRegular.end(grupos[i]));
+			//System.out.println("grupos para sacar " + grupos[i]);
+		}
 	}
 
 }
