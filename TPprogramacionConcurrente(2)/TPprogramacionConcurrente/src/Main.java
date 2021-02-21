@@ -58,13 +58,13 @@ public class Main {
 
 		List<InvTransicion> listaInvariantes = new ArrayList<>();
 		//Tinvariantes
-		int [] gruposInvariante1 = {1, 5, 7, 11, 13, 15, 17, 19};
+		int [] gruposInvariante1 = {2, 6, 8, 12, 14, 16, 18, 20};
 		InvTransicion invariante1 = new InvTransicion("invariante1", gruposInvariante1);
-		int [] gruposInvariante2 = {1, 5, 7, 21, 23, 25};
+		int [] gruposInvariante2 = {2, 6, 8, 22, 24};
 		InvTransicion invariante2 = new InvTransicion("invariante2", gruposInvariante2);
-		int [] gruposInvariante3 = {1, 27, 29, 33, 35, 37, 39, 41};
+		int [] gruposInvariante3 = {2, 26, 28, 32, 34, 36, 38, 40};
 		InvTransicion invariante3 = new InvTransicion("invariante3", gruposInvariante3);
-		int [] gruposInvariante4 = {1, 27, 29, 43, 45, 47};
+		int [] gruposInvariante4 = {2, 26, 28, 42, 44};
 		InvTransicion invariante4 = new InvTransicion("invariante4", gruposInvariante4);
 		listaInvariantes.add(invariante1);
 		listaInvariantes.add(invariante2);
