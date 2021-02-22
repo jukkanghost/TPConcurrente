@@ -150,7 +150,21 @@ public class Main {
 
 		System.out.println("\n\n");
 		log.cerrar();
+
+		long startTime2 = System.nanoTime();
 		regex.chequeoInvariantes();
+		long endTime2 = System.nanoTime() - startTime2;
+
+		int milisegundos2 = (int) (endTime2/1e6) ;
+		int segundos2 = (int) (endTime2 / 1e9);
+		int minutos2 = (int) (segundos2 / 60);
+		segundos2 = segundos2 - minutos2 * 60;
+		milisegundos2 = milisegundos2 - segundos2*1000;
+		milisegundos2 = milisegundos2 - minutos2*60*1000;
+
+		System.out.println("Duracion de Regex: " + minutos2 + " minutos, " + segundos2 + " segundos, " + milisegundos2 + "milisegundos");
+
+
 		
 		System.out.println("\n-----FIN DEL MAIN-----");
 		System.out.println("Duracion: " + minutos + " minutos, " + segundos + " segundos, " + milisegundos + "milisegundos");
