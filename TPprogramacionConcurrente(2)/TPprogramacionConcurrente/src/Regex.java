@@ -10,12 +10,13 @@ public class Regex {
 
 	// No separar en grupos los invariantes
 
-	private String expresionRegular = "((16)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(7)(.*?)(\\s2)(.*?)(\\s3))|((\\s2)(.*?)(\\s3))))|((8)(.*?)(9)(.*?)(((12)(.*?)(13)(.*?)(15)(.*?)(10)(.*?)(11))|((10)(.*?)(11))))))";
+	private String expresionRegular = "((16)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(7)(.*?)(\\s2)(.*?)(\\s3))|((\\s2)(.*?)(\\s3)(.*?)(\\s6))|((\\s2)(.*?)(\\s6)(.*?)(\\s3))|((\\s6)(.*?)(\\s2)(.*?)(\\s3))))|((8)(.*?)(9)(.*?)(((12)(.*?)(13)(.*?)(15)(.*?)(10)(.*?)(11))|((10)(.*?)(11)(.*?)(14))|((10)(.*?)(14)(.*?)(11))|((14)(.*?)(10)(.*?)(11))))))";
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
 	List<InvTransicion> listaInvariantes = new ArrayList<>();
-	private int[] contadores = {0, 0, 0, 0};
+
+	private int[] contadores = {0, 0, 0, 0, 0, 0, 0, 0};
 	private int contadorTodo = 0;
 
 	public Regex(Log log, List<InvTransicion> listaInvariantes) {
@@ -44,12 +45,15 @@ public class Regex {
 				contadores[invarianteMatcheado] = contadores[invarianteMatcheado] + 1;
 				LlenarListaInvariantes(matcherExpresionRegular, listaInvariantes.get(invarianteMatcheado));
 				contadorTodo++;
+				//System.out.println("nuevo inv num " + contadorTodo);
 			}
 			QuitarListaInvariantes();
+			//System.out.println("invariantes borrados");
 
 			despues = contadorTodo;
 
 			if (antes == despues) {
+				//System.out.println("quedan mas, a seguir pasando");
 				seguir = false;
 			}
 
@@ -80,6 +84,7 @@ public class Regex {
 				break;
 			}
 		}
+		
 		//System.out.println("invariante encontrado es : " + inv);
 		return inv;
 	}
