@@ -18,11 +18,11 @@ public class Politica {
 
     public int decidir(int[] sens) {
         int elegida = -1;
-        for (int i = 0; i < sens.length; i++) {
-            if (sens[i] == 0 || sens[i] == 15) {
+        
+            if (sens[0] == 1 || sens[15] == 1) {
                 confli = 1;
             }
-        }
+        
         if (confli == 1) {
             confli = 0;
             double random = Math.random();
@@ -40,7 +40,10 @@ public class Politica {
         }
         else {
             int r = (int) (Math.random() * sens.length);
-            return elegida = sens[r];
+            while (sens[r] == 0) {
+                r = (int) (Math.random() * sens.length);
+            }
+            return elegida = r;
         }
     }
 
