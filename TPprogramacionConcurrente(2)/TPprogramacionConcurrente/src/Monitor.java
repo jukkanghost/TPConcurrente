@@ -36,14 +36,28 @@ public class Monitor {
 					// INVARIANTES DE PLAZA
 					invariante.CheckInvPlazas();
 
-					int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
+					int [] esperando = quienesEstan();
+					int [] m = rdp.calcularConjuncion(esperando, rdp.getEx());
 
-					int decision = politica.decidir(sensibilizadas); // Una vex que tengo la decisión, despierto a la
+					//int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
+
+					boolean bandera = false;
+                    for (int i = 0; i < m.length; i++) {
+                        if (m[i] != 0) {
+                            bandera = true;
+                            break;
+                        }
+                    }
+					
+					if (bandera) {
+					int decision = politica.decidir(m); // Una vex que tengo la decisión, despierto a la
 																		// transici+on elegida (en el vector de
 																		// semáforos)
+					
 					// int decision = politica.resolverConflictoRandom(sensibilizadas);
 					// int decision = politica.resolverConflicto(sensibilizadas);
 					semaforos[decision].release();
+					}
 					break;
 				} else {
 					semaforo.release();
@@ -92,5 +106,15 @@ public class Monitor {
 			}
 		}
 	}
+
+	private int[] quienesEstan() {
+        int[] esperando = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < semaforos.length; i++) {
+            if (semaforos[i].hasQueuedThreads()) {
+                esperando[i] = 1;
+            }
+        }
+        return esperando;
+    }
 
 }
