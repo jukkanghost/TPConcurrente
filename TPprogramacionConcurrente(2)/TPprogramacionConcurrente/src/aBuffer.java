@@ -18,10 +18,10 @@ public class aBuffer implements Runnable {
     public void run() {
         while(!administrador.getEnd()) {
             monitor.disparar(t1);
-            System.out.println("Se dirige al buffer " + buffer.getId());
+            //System.out.println("Se dirige al buffer " + buffer.getId());
             monitor.disparar(t2);
-            System.out.println("Arribó una tarea al buffer " + buffer.getId());
-            System.out.println("Elementos en el buffer " + buffer.getId() + ": " + buffer.getElementos());
+            System.out.println("\nArribó una tarea al buffer " + buffer.getId());
+            System.out.println("\nElementos en el buffer " + buffer.getId() + ": " + buffer.getElementos());
         }
     }
 }

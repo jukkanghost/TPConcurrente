@@ -10,8 +10,10 @@ public class Monitor {
     private Tiempo tiempo;
     private Administrador administrador;
     private InvPlazas invariante;
+    private int cantidadDeTransiciones = 0;
 
-    public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo, Administrador admin, InvPlazas invariantes) {
+    public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo, Administrador admin,
+                   InvPlazas invariantes) {
         semaforo = new Semaphore(1, true);
         semaforos = new Semaphore[17];
         for (int i = 0; i < semaforos.length; i++) {
@@ -32,25 +34,49 @@ public class Monitor {
                 if (rdp.evaluarDisparo(t)) {
                     rdp.disparar(t);
                     log.escribir(t.getId() + "  ");
-                    //INVARIANTES DE PLAZA
+                    cantidadDeTransiciones++;
+                    // INVARIANTES DE PLAZA
                     invariante.CheckInvPlazas();
 
-                    int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-                  /*  for (int i = 0; i < sensibilizadas.length; i++) {
-                        System.out.println("sensibilizadas " +sensibilizadas[i]);
+                   // int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
+                    int [] esperando = quienesEstan();
+                    /*System.out.println("\nQuienes estan:");
+                    for (int i = 0; i < esperando.length; i++) {
+                        System.out.print(esperando[i]);
+                    }
+                    int[] ex = rdp.getEx();
+                    System.out.println("\nex:");
+                    for (int i = 0; i < ex.length; i++) {
+                        System.out.print(ex[i]);
                     }
 
-                   */
-                    int decision = politica.decidir(sensibilizadas); //Una vex que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
-                   // System.out.println("decision politca "+ decision);
-                    //int decision = politica.resolverConflictoRandom(sensibilizadas);
-                    //int decision = politica.resolverConflicto(sensibilizadas);
-                    semaforos[decision].release();
+                     */
+
+                    int [] m = rdp.calcularConjuncion(esperando, rdp.getEx());
+                    /*System.out.println("\nm:");
+                    for (int i = 0; i < m.length; i++) {
+                        System.out.print(m[i]);
+                    }
+
+                     */
+                    boolean bandera = false;
+                    for (int i = 0; i < m.length; i++) {
+                        if (m[i] != 0) {
+                            bandera = true;
+                            break;
+                        }
+                    }
+                    if (bandera) {
+                        int decision = politica.decidir(m); // Una vex que tengo la decisión, despierto a la
+                        //System.out.println("\nDecision: " + decision);
+                        // transici+on elegida (en el vector de
+                        // semáforos)
+                        // int decision = politica.resolverConflictoRandom(sensibilizadas);
+                        // int decision = politica.resolverConflicto(sensibilizadas);
+                        semaforos[decision].release();
+                    }
                     break;
                 } else {
-                   int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-                    int decision = politica.decidir(sensibilizadas);
-                    semaforos[decision].release();
                     semaforo.release();
                     dormir(t);
                     try {
@@ -58,17 +84,16 @@ public class Monitor {
                     } catch (Exception exit) {
                         break;
                     }
-
                 }
             }
         } catch (InterruptedException e) {
             return;
         } finally {
             if (administrador.getEnd()) {
-                for (int i = 0; i <semaforos.length ; i++) {
-
+                for (int i = 0; i < semaforos.length; i++) {
                     semaforos[i].release();
                 }
+                //System.out.println("Cantidad de transiciones disparadas: " + cantidadDeTransiciones);
             }
             semaforo.release();
         }
@@ -76,27 +101,38 @@ public class Monitor {
     }
 
     private void dormir(Transicion t) {
-        for (int i = 0; i < t.getTransicion().length; i++) {
-            if (t.getTransicion()[i] == 1) {
-                if (tiempo.esTemporal(t)) {
-                    long time = tiempo.calcularTiempo(t);
-                    if (time>0) {
-                        try {
-                            Thread.sleep(time);
-                        } catch (InterruptedException exit) {
-                            break;
-                        }
+        if (tiempo.esTemporal(t)) {
+            long time = tiempo.calcularTiempo(t);
+            if (time > 0) {
+                try {
+                    Thread.sleep(time);
+
+                } catch (InterruptedException exit) {
+
+                }
+            }
+        }
+        if (!tiempo.esTemporal(t)) {
+            try {
+                for (int i = 0; i < t.getTransicion().length; i++) {
+                    if (t.getTransicion()[i] == 1) {
+                        semaforos[i].acquire();
                     }
                 }
-                try {
-                    semaforos[i].acquire();
-                } catch (InterruptedException exit) {
-                    break;
-                }
-                break;
+            } catch (InterruptedException exit) {
+
             }
         }
     }
 
+    private int[] quienesEstan() {
+        int[] esperando = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < semaforos.length; i++) {
+            if (semaforos[i].hasQueuedThreads()) {
+                esperando[i] = 1;
+            }
+        }
+        return esperando;
+    }
 
 }

@@ -1,87 +1,62 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class RedDePetri {
-    private int[][] matrizIncidencia = {
-            { -1,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	0,     -1,      0 },
-            { 1,	-1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0,      0 },
-            { 0,	0,     -1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      1 },
-            { 0,	0,	1,     -1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0 },
-            { 0,	0,     -1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0 },
-            { 0,	0,	0,	0,     -1,	0,	0,	1,	0,	0,	0,	0,	0,	0,	0,	0,      0 },
-            { 0,	0,	0,	0,	1,     -1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0 },
-            { 0,	0,	0,	0,      0,     -1,     -1,	0,	0,	0,	0,	0,	0,	0,	0,	0,      1 },
-            { 0,	0,	0,	0,	0,	1,	0,     -1,	0,	0,	0,	0,	0,	0,	0,	0,      0 },
-            { 0,	1,	0,	0,	0,	0,	0,      0,     -1,	0,	0,	0,	0,	0,	0,	0,      1 },
-            { 0,	1,	0,	0,	0,	0,	0,	0,	0,     -1,	0,	0,	0,	0,	0,	0,      0 },
-            { 0,	0,	0,	0,	0,	0,	0,	0,	0,      1,     -1,	0,	0,	0,	0,	0,      0 },
-            { 0,	0,	0,	0,	0,	0,	0,	0,      0,     -1,	1,	0,	0,	0,	0,	0,      0 },
-            { 0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0,     -1,	0,	0,	1,	0,      0 },
-            { 0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,     -1,     -1,	0,	0,      0 },
-            { 0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,     -1,	0,	0,	0,      0 },
-            { 0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	0,     -1,	0,      0 },
-            { 0,    0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      1,     -1 },
-    };
-    private int[][] backwardsIncidenceMatrix = {
-            {1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      1,      0},
-            {0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	1,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	1,	0,	0,	0,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	1,	1,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,      0},
-            {0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	0,	0,	0,	1,	1,	0,      0},
-            {0,     0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      1},
-    };
-    private int[] marcado = { 0,	0,	0,	0,	1,	1,	0,	0,	0,	1,	0,	0,	1,	1,	0,	0,	0,      0 };
-    private int[][] h = {
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    };
-
-    private int[][] z = {
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    };
-
+    private int[][] matrizIncidencia = { { -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0 },
+            { 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 0, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 1 },
+            { 0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 1, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0 },
+            { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, -1, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1 }, };
+    private int[][] backwardsIncidenceMatrix = { { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
+            { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, };
+    private int[] marcado = { 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0 };
+    private int[][] h = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
     private int[] e = new int[17];
     private int[] q = new int[18];
     private int[] b = new int[17];
@@ -109,13 +84,13 @@ public class RedDePetri {
                 }
             }
         }
-        for(int i = 0; i<marcado.length; i++) {
-            if(mult[i]!=0) {
-                aviso=true;
+        for (int i = 0; i < marcado.length; i++) {
+            if (mult[i] != 0) {
+                aviso = true;
                 break;
             }
         }
-        if(!aviso) {
+        if (!aviso) {
             return false; // return false
         }
         for (int i = 0; i < marcado.length; i++) {
@@ -124,18 +99,12 @@ public class RedDePetri {
                 return false; // return false
             }
         }
-        //Si es temporal
+        // Si es temporal
         if (tiempo.esTemporal(t)) {
-            //if (tiempo.getTiempoInicial(t.getId()) == 0) {
-               // return false;
-            //}
             long time = tiempo.calcularTiempo(t);
-           // System.out.println("tiempo " + time);
-            if (time>0) {
+            if (time > 0) {
                 return false;
-            }
-            else {
-                //System.out.println("Soy temporal y estoy sensibilizada");
+            } else {
                 return true;
             }
         }
@@ -143,7 +112,6 @@ public class RedDePetri {
     }
 
     public int disparar(Transicion t) {
-
         boolean aviso = false;
         int mult[] = new int[marcado.length];
         int suma[] = new int[marcado.length];
@@ -155,13 +123,13 @@ public class RedDePetri {
                 }
             }
         }
-        for(int i = 0; i<marcado.length; i++) {
-            if(mult[i]!=0) {
-                aviso=true;
+        for (int i = 0; i < marcado.length; i++) {
+            if (mult[i] != 0) {
+                aviso = true;
                 break;
             }
         }
-        if(!aviso) {
+        if (!aviso) {
             return 0;
         }
         for (int i = 0; i < marcado.length; i++) {
@@ -175,51 +143,43 @@ public class RedDePetri {
         calcularQ();
         calcularB();
         ex = calcularConjuncion(e, b);
-
-       // if (tiempo.esTemporal(t)) {
-          //  tiempo.setSensibilizada(t.getId(), 1);
-        //}
-
-
-        //borra el valor
-        int guardar = 0;
-        for (int i = 0; i < t.getTransicion().length; i++) {
-            if (t.getTransicion()[i] == 1) {
-                guardar = i;
-            }
-        }
-        tiempo.setTiempoActual(0, guardar);
-        //Setear tiempos
-       // System.out.println("Estoy aca");
-        int[] sensibilizadas = getTransicionesSensibilizadas();
-      /* for (int i = 0; i < sensibilizadas.length; i++) {
-            System.out.println("sensibilizadas " +sensibilizadas[i]);
-        }
-
-       */
-
-        for (int i = 0; i < sensibilizadas.length; i++ ) {
-            if(tiempo.esTemporal2(sensibilizadas[i])) {
-               // System.out.println("Soy temporal " + sensibilizadas[i] );
-                if(tiempo.getTiempoInicial(sensibilizadas[i]) == 0) {
-                    tiempo.setTiempoActual(System.currentTimeMillis(), sensibilizadas[i]);
-                    //tiempo.displayTiempo();
-                }
-            }
-        }
-
-       //sensibilizadasConTiempo();
-
+        SetearTiempos(t);
         return 1;
     }
 
+    private void SetearTiempos (Transicion t) {
+        //aviso que ya disparo, entonces ya se puede setear el tiempo de vuelta
+        if(tiempo.esTemporal(t)) {
+            tiempo.setTemporizada(t.getId(), 0);
+        }
+
+        //Obtengo las transiciones sensibilizadas por el disparo y las temporales
+        int [] sensibilizadas = getTransicionesSensibilizadas();
+        List<Integer> sensibilizadasTraducidas = traductor(sensibilizadas);
+        List<Integer> temporales = tiempo.getTemporales();
+        //y me fijo si alguna temporal fue sensibilizada por el disparo para marcar el tiempo
+        for (int i = 0; i < temporales.size(); i++) {
+            int temp = temporales.get(i);
+            for (int j = 0; j < sensibilizadasTraducidas.size(); j++) {
+                if(sensibilizadasTraducidas.get(j) == temp) {
+                    if(!tiempo.getTemporizada(temp)){
+                        tiempo.setTiempoDeSensibilizado(System.currentTimeMillis(), temp);
+                        tiempo.setTemporizada(temp, 1);
+                    }
+                }
+            }
+        }
+    }
+
+
+
     private void calcularE() {
-        for(int i = 0; i<17; i++) {
-            e[i]=1;
-            for(int j = 0; j<marcado.length; j++) {
-                if(backwardsIncidenceMatrix[j][i] == 1) {
-                    if(marcado[j]==0) {
-                        e[i]=0;
+        for (int i = 0; i < 17; i++) {
+            e[i] = 1;
+            for (int j = 0; j < marcado.length; j++) {
+                if (backwardsIncidenceMatrix[j][i] == 1) {
+                    if (marcado[j] == 0) {
+                        e[i] = 0;
                         break;
                     }
                 }
@@ -228,21 +188,21 @@ public class RedDePetri {
     }
 
     private void calcularQ() {
-        for(int i = 0; i<marcado.length; i++) {
+        for (int i = 0; i < marcado.length; i++) {
             q[i] = 1;
-            if(marcado[i]!=0) {
-                q[i] =0;
+            if (marcado[i] != 0) {
+                q[i] = 0;
             }
         }
     }
 
     private void calcularB() {
-        for(int i = 0; i<17; i++) {
-            b[i]=1;
-            for(int j = 0; j<marcado.length; j++) {
-                if(h[j][i] == 1) {
-                    if(marcado[j]>0) {
-                        b[i]=0;
+        for (int i = 0; i < 17; i++) {
+            b[i] = 1;
+            for (int j = 0; j < marcado.length; j++) {
+                if (h[j][i] == 1) {
+                    if (marcado[j] > 0) {
+                        b[i] = 0;
                         break;
                     }
                 }
@@ -250,14 +210,13 @@ public class RedDePetri {
         }
     }
 
-    private int[] calcularConjuncion(int[] t1, int[] t2) {
+    public int[] calcularConjuncion(int[] t1, int[] t2) {
         int[] t3 = new int[17];
-        for(int i = 0; i<17; i++) {
-            if(t1[i] == 1 && t2[i]==1) {
-                t3[i]=1;
-            }
-            else {
-                t3[i]=0;
+        for (int i = 0; i < 17; i++) {
+            if (t1[i] == 1 && t2[i] == 1) {
+                t3[i] = 1;
+            } else {
+                t3[i] = 0;
             }
         }
         return t3;
@@ -323,19 +282,21 @@ public class RedDePetri {
         return marcado[8];
     }
 
-    public int getMP17() { return marcado[9]; }
+    public int getMP17() {
+        return marcado[9];
+    }
 
     public int[] getTransicionesSensibilizadas() {
         int contador = 0;
-        for(int i = 0; i < ex.length; i++) {
-            if(ex[i] > 0) {
+        for (int i = 0; i < ex.length; i++) {
+            if (ex[i] > 0) {
                 contador++;
             }
         }
         int aux = 0;
         int[] tSensibilizadas = new int[contador];
-        for(int i = 0; i < ex.length; i++) {
-            if(ex[i] > 0) {
+        for (int i = 0; i < ex.length; i++) {
+            if (ex[i] > 0) {
                 tSensibilizadas[aux] = i;
                 aux++;
             }
@@ -343,20 +304,18 @@ public class RedDePetri {
         return tSensibilizadas;
     }
 
-    private void sensibilizadasConTiempo() {
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 17; j++) {
-                if (z[j][i] == 1) {
-                    if (marcado[j] > 0) {
-                        if (tiempo.getSensibilizada(i)) {
-                            tiempo.setTiempoActual(System.currentTimeMillis(), i);
-                            tiempo.setSensibilizada(i, 0);
-                            System.out.println("i: " + i + "j: " + j);
-                        }
-                    }
-                }
-            }
+    public List<Integer> traductor(int []sensibilizadas) {
+        int [] traduc = {0, 1, 10, 11, 12, 13, 14, 15, 16, 2, 3, 4, 5, 6, 7, 8, 9};
+        List <Integer> devolver = new ArrayList<Integer>();
+        for (int i = 0; i < sensibilizadas.length; i++) {
+            devolver.add(traduc[sensibilizadas[i]]);
         }
+        return devolver;
     }
+
+    public int[] getEx() {
+        return ex;
+    }
+
 
 }

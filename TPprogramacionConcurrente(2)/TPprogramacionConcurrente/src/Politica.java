@@ -11,11 +11,16 @@ public class Politica {
         this.rdp = rdp;
     }
 
-    public int decidir(int[] sens) {
+    public int decidir(int[] m) {
         int elegida = -1;
-        for (int i = 0; i < sens.length; i++) {
-            if (sens[i] == 0 || sens[i] == 15) {
+        for (int i = 0; i < m.length; i++) {
+            if (m[0] == 1 && m[15] == 1) {
                 confli = 1;
+            }
+            else if (m[0] == 1) {
+                return 0;
+            } else if (m[15] == 1){
+                return 15;
             }
         }
         if (confli == 1) {
@@ -23,20 +28,36 @@ public class Politica {
             double random = Math.random();
             int b1 = buffer1.getElementos();
             int b2 = buffer2.getElementos();
-            if (b1 > b2) { elegida = 15;}
-            if (b2 > b1) { elegida = 0;}
+            if (b1 > b2) {
+                elegida = 15;
+            }
+            if (b2 > b1) {
+                elegida = 0;
+            }
             if (b1 == b2) {
-                if(random > 0.5) {
+                if (random > 0.5) {
                     elegida = 15;
+                } else {
+                    elegida = 0;
                 }
-                else {elegida = 0;}
             }
             return elegida;
+        } else {
+            int r = (int) (Math.random() * m.length);
+            ;
+            while (m[r] == 0) {
+                r = (int) (Math.random() * m.length);
+            }
+            return elegida = r;
         }
-        else {
-            int r = (int) (Math.random() * sens.length);
-            return elegida = sens[r];
+    }
+
+    public int resolverConflictoRandom(int[] m) {
+        int r = (int) (Math.random() * m.length);
+        while (m[r] == 0) {
+            r = (int) (Math.random() * m.length);
         }
+        return m[r];
     }
 }
 

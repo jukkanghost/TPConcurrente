@@ -5,111 +5,121 @@ import java.util.ArrayList;
 
 public class Regex {
     private Log log;
-    private StringBuffer texto = new StringBuffer();
+    private StringBuffer invariantes = new StringBuffer();
 
-    private String invarianteTodo = "((10)(.*?)(11))|((12)(.*?)(13)(.*?)(15))|((\\s2)(.*?)(\\s3))|((16)(.*?)((\\s0)(.*?)(\\s1\\s)|(8)(.*?)(9)))|((\\s4)(.*?)(\\s5)(.*?)(7))";
+
+    // No separar en grupos los invariantes
+
+    private String expresionRegular = "((16)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(7)(.*?)(\\s2)(.*?)(\\s3))|((\\s2)(.*?)(\\s3))))|((8)(.*?)(9)(.*?)(((12)(.*?)(13)(.*?)(15)(.*?)(10)(.*?)(11))|((10)(.*?)(11))))))";
 
     List<Integer> startIndexs = new ArrayList<>();
     List<Integer> endIndexs = new ArrayList<>();
+    List<InvTransicion> listaInvariantes = new ArrayList<>();
 
-    public Regex(Log log) {
+    private int[] contadores = {0, 0, 0, 0};
+    private int contadorTodo = 0;
+
+    public Regex(Log log, List<InvTransicion> listaInvariantes) {
         this.log = log;
+        this.listaInvariantes = listaInvariantes;
     }
 
     public void chequeoInvariantes() {
-        texto = log.sacarInfo();
+        invariantes = log.sacarInfo();
+        //invariantes.append("16  0  1  4  5  7  2  3  16    0  1    2   3  6 10  11  8  9  12  13  4  5   15  7  1  8  9  12  13  4  5   10   11  15    10  11   8  9    12  13  6  15     1  8  9  6  12   13   10  11    10    11     15  1  8  9   6   12  13 ");
+        Pattern patternTodo = Pattern.compile(expresionRegular);
 
 
-        Pattern patternTodo = Pattern.compile(invarianteTodo);
-
-        int contadorinv1 = 0;
-        int contadorinv2 = 0;
-        int contadorinv3 = 0;
-        int contadorinv4 = 0;
-        int contadorinv5 = 0;
-        int contadorinv6 = 0;
-        int contadorTodo = 0;
         int antes = 0;
         int despues = 0;
         boolean seguir = true;
+        //long tiempoInicial = System.currentTimeMillis();
+       // boolean demora = false;
 
         while (seguir) {
+/*
+            if (demora){
+                break;
+            }
 
+ */
             antes = contadorTodo;
 
-            Matcher matcherTodo = patternTodo.matcher(texto);
+            Matcher matcherExpresionRegular = patternTodo.matcher(invariantes);
 
-            while (matcherTodo.find()) {
-                if (matcherTodo.group(15) != null) {
-                    startIndexs.add(matcherTodo.start(16));
-                    endIndexs.add(matcherTodo.end(16));
-                    if (matcherTodo.group(19) != null) {
-                        contadorinv1++;
-                        startIndexs.add(matcherTodo.start(19));
-                        endIndexs.add(matcherTodo.end(19));
-                        startIndexs.add(matcherTodo.start(21));
-                        endIndexs.add(matcherTodo.end(21));
-                    } else {
-                        contadorinv4++;
-                        startIndexs.add(matcherTodo.start(22));
-                        endIndexs.add(matcherTodo.end(22));
-                        startIndexs.add(matcherTodo.start(24));
-                        endIndexs.add(matcherTodo.end(24));
-                    }
-                } else if (matcherTodo.group(11) != null) {
-                    contadorinv2++;
-                    startIndexs.add(matcherTodo.start(12));
-                    endIndexs.add(matcherTodo.end(12));
-                    startIndexs.add(matcherTodo.start(14));
-                    endIndexs.add(matcherTodo.end(14));
-                } else if (matcherTodo.group(25) != null) {
-                    contadorinv3++;
-                    startIndexs.add(matcherTodo.start(26));
-                    endIndexs.add(matcherTodo.end(26));
-                    startIndexs.add(matcherTodo.start(28));
-                    endIndexs.add(matcherTodo.end(28));
-                    startIndexs.add(matcherTodo.start(30));
-                    endIndexs.add(matcherTodo.end(30));
-                } else if (matcherTodo.group(1) != null) {
-                    contadorinv5++;
-                    startIndexs.add(matcherTodo.start(2));
-                    endIndexs.add(matcherTodo.end(2));
-                    startIndexs.add(matcherTodo.start(4));
-                    endIndexs.add(matcherTodo.end(4));
-                } else if (matcherTodo.group(5) != null) {
-                    contadorinv6++;
-                    startIndexs.add(matcherTodo.start(6));
-                    endIndexs.add(matcherTodo.end(6));
-                    startIndexs.add(matcherTodo.start(8));
-                    endIndexs.add(matcherTodo.end(8));
-                    startIndexs.add(matcherTodo.start(10));
-                    endIndexs.add(matcherTodo.end(10));
-                }
+            while (matcherExpresionRegular.find()) { //mientras que la expresion regular haga match
+                int invarianteMatcheado = invarianteMatch(matcherExpresionRegular);
+                contadores[invarianteMatcheado] = contadores[invarianteMatcheado] + 1;
+                LlenarListaInvariantes(matcherExpresionRegular, listaInvariantes.get(invarianteMatcheado));
                 contadorTodo++;
-            }
+                //System.out.println("nuevo inv num " + contadorTodo);
+               /* long tiempoActual = System.currentTimeMillis();
+                if (tiempoActual-tiempoInicial > 15000) {
+                    demora = true;
+                    System.out.println("Mucha demora");
+                    break;
+                }
 
-            for (int j = startIndexs.size(); j > 0; j--) {
-                texto.delete(startIndexs.get(j - 1), endIndexs.get(j - 1));
+                */
+
             }
-            startIndexs.clear();
-            endIndexs.clear();
+            QuitarListaInvariantes();
+            //System.out.println("invariantes borrados");
 
             despues = contadorTodo;
 
             if (antes == despues) {
+                //System.out.println("quedan mas, a seguir pasando");
                 seguir = false;
             }
 
         }
 
-        System.out.println("invariante 1 " + contadorinv1);
-        System.out.println("invariante 2 " + contadorinv2);
-        System.out.println("invariante 3 " + contadorinv3);
-        System.out.println("invariante 4 " + contadorinv4);
-        System.out.println("invariante 5 " + contadorinv5);
-        System.out.println("invariante 6 " + contadorinv6);
+        //imprimir contadores
+        for (int i = 0; i < contadores.length; i++) {
+            System.out.println("invariante " + i + ": " + contadores[i]);
+        }
 
-        log.escribirLog(texto);
+        log.escribirLog(invariantes);
+    }
+
+    private int invarianteMatch (Matcher matcherExpresionRegular) {//me fijo que invariante matcheo y lo devuelvo
+        int inv = 0;
+        for (int i = 0; i < listaInvariantes.size(); i++) {
+            int contador = 0;
+            //System.out.println("invariante " + i + " buscando");
+            int [] grupos = listaInvariantes.get(i).getGrupos();
+            for (int j = 0; j < grupos.length; j++) {
+                if (matcherExpresionRegular.group(grupos[j]) != null) {
+                    //System.out.println("grupo " + grupos[j] + " encontrado");
+                    contador++;
+                }
+            }
+            if (contador==grupos.length) {
+                inv = i;
+                break;
+            }
+        }
+
+        //System.out.println("invariante encontrado es : " + inv);
+        return inv;
+    }
+
+    private void QuitarListaInvariantes () { //elimina los invariantes ya encontrados con los indices de la lista
+        for (int j = startIndexs.size(); j > 0; j--) {
+            invariantes.delete(startIndexs.get(j - 1), endIndexs.get(j - 1));
+        }
+        startIndexs.clear();
+        endIndexs.clear();
+    }
+
+    private void LlenarListaInvariantes (Matcher matcherExpresionRegular, InvTransicion invariante) { //agrega los indices de los invariantes encontrados a la lista
+        int[] grupos = invariante.getGrupos();
+        for (int i = 0; i < grupos.length; i++) {
+            startIndexs.add(matcherExpresionRegular.start(grupos[i]));
+            endIndexs.add(matcherExpresionRegular.end(grupos[i]));
+            //System.out.println("grupos para sacar " + grupos[i]);
+        }
     }
 
 }
