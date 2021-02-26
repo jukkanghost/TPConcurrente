@@ -10,7 +10,7 @@ public class Regex {
 
 	// No separar en grupos los invariantes
 
-	private String expresionRegular = "((16)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(7)(.*?)(\\s2)(.*?)(\\s3))|((\\s2)(.*?)(\\s3)(.*?)(\\s6))|((\\s2)(.*?)(\\s6)(.*?)(\\s3))|((\\s6)(.*?)(\\s2)(.*?)(\\s3))))|((8)(.*?)(9)(.*?)(((12)(.*?)(13)(.*?)(15)(.*?)(10)(.*?)(11))|((10)(.*?)(11)(.*?)(14))|((10)(.*?)(14)(.*?)(11))|((14)(.*?)(10)(.*?)(11))))))";
+	private String expresionRegular = "((16\\s)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(\\s2)(.*?)(\\s3)(.*?)(7\\s))|((\\s2)(.*?)(\\s3)(.*?)(\\s6))|((\\s2)(.*?)(\\s6)(.*?)(\\s3))|((\\s6)(.*?)(\\s2)(.*?)(\\s3))))|((8\\s)(.*?)(9\\s)(.*?)(((12\\s)(.*?)(13\\s)(.*?)(10\\s)(.*?)(11\\s)(.*?)(15\\s))|((10\\s)(.*?)(11\\s)(.*?)(14\\s))|((10\\s)(.*?)(14\\s)(.*?)(11\\s))|((14\\s)(.*?)(10\\s)(.*?)(11\\s))))))";
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
@@ -45,15 +45,15 @@ public class Regex {
 				contadores[invarianteMatcheado] = contadores[invarianteMatcheado] + 1;
 				LlenarListaInvariantes(matcherExpresionRegular, listaInvariantes.get(invarianteMatcheado));
 				contadorTodo++;
-				//System.out.println("nuevo inv num " + contadorTodo);
+				
 			}
 			QuitarListaInvariantes();
-			//System.out.println("invariantes borrados");
+			
 
 			despues = contadorTodo;
 
 			if (antes == despues) {
-				//System.out.println("quedan mas, a seguir pasando");
+				
 				seguir = false;
 			}
 
@@ -71,11 +71,11 @@ public class Regex {
 		int inv = 0;
 		for (int i = 0; i < listaInvariantes.size(); i++) {
 			int contador = 0;
-			//System.out.println("invariante " + i + " buscando");
+			
 			int [] grupos = listaInvariantes.get(i).getGrupos();
 			for (int j = 0; j < grupos.length; j++) {
 				if (matcherExpresionRegular.group(grupos[j]) != null) {
-					//System.out.println("grupo " + grupos[j] + " encontrado");
+					
 					contador++;
 				}
 			}
