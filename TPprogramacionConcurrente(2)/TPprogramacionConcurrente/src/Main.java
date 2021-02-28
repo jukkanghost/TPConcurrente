@@ -62,20 +62,14 @@ public class Main {
 		InvTransicion invariante1 = new InvTransicion("invariante1", gruposInvariante1);
 		int [] gruposInvariante2 = {2, 6, 8, 22, 24, 26};
 		InvTransicion invariante2 = new InvTransicion("invariante2", gruposInvariante2);
-		int [] gruposInvariante3 = {2, 6, 8, 28, 30, 32};
+		int [] gruposInvariante3 = {2, 28, 30, 34, 36, 38, 40, 42};
 		InvTransicion invariante3 = new InvTransicion("invariante3", gruposInvariante3);
-		int [] gruposInvariante4 = {2, 34, 36, 40, 42, 44, 46, 48};
+		int [] gruposInvariante4 = {2, 28, 30, 44, 46, 48};
 		InvTransicion invariante4 = new InvTransicion("invariante4", gruposInvariante4);
-		int [] gruposInvariante5 = {2, 34, 36, 50, 52, 54};
-		InvTransicion invariante5 = new InvTransicion("invariante5", gruposInvariante5);
-		int [] gruposInvariante6 = {2, 34, 36, 56, 58, 60};
-		InvTransicion invariante6 = new InvTransicion("invariante6", gruposInvariante6);
 		listaInvariantes.add(invariante1);
 		listaInvariantes.add(invariante2);
 		listaInvariantes.add(invariante3);
 		listaInvariantes.add(invariante4);
-		listaInvariantes.add(invariante5);
-		listaInvariantes.add(invariante6);
 		Regex regex = new Regex(log, listaInvariantes);
 
 

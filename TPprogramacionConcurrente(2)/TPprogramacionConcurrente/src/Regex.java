@@ -10,13 +10,13 @@ public class Regex {
 
 	// No separar en grupos los invariantes
 
-	private String expresionRegular = "((16\\s)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(\\s2)(.*?)(\\s3)(.*?)(7\\s))|((\\s2)(.*?)(\\s3)(.*?)(\\s6))|((\\s6)(.*?)(\\s2)(.*?)(\\s3))))|((8\\s)(.*?)(9\\s)(.*?)(((12\\s)(.*?)(13\\s)(.*?)(10\\s)(.*?)(11\\s)(.*?)(15\\s))|((10\\s)(.*?)(11\\s)(.*?)(14\\s))|((14\\s)(.*?)(10\\s)(.*?)(11\\s))))))";
+	private String expresionRegular = "((16\\s)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(\\s2)(.*?)(\\s3)(.*?)(7\\s))|((\\s6)(.*?)(\\s2)(.*?)(\\s3))))|((8\\s)(.*?)(9\\s)(.*?)(((12\\s)(.*?)(13\\s)(.*?)(10\\s)(.*?)(11\\s)(.*?)(15\\s))|((14\\s)(.*?)(10\\s)(.*?)(11\\s))))))";
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
 	List<InvTransicion> listaInvariantes = new ArrayList<>();
 
-	private int[] contadores = {0, 0, 0, 0, 0, 0};
+	private int[] contadores = {0, 0, 0, 0};
 	private int contadorTodo = 0;
 
 	public Regex(Log log, List<InvTransicion> listaInvariantes) {
