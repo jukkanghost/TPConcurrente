@@ -19,7 +19,7 @@ public class Politica {
     public int decidir(int[] sens) {
         int elegida = -1;
         
-            if (sens[0] == 1 || sens[15] == 1) {
+            if (sens[0] == 1 && sens[15] == 1) {
                 confli = 1;
             }
         

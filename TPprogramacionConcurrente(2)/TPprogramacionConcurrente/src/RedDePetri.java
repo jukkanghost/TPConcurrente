@@ -166,8 +166,9 @@ public class RedDePetri {
 			int temp = temporales.get(i);
 			for (int j = 0; j < sensibilizadasTraducidas.size(); j++) {
 				if(sensibilizadasTraducidas.get(j) == temp) {
+					long time = System.currentTimeMillis();
 					if(!tiempo.getTemporizada(temp)){
-						tiempo.setTiempoDeSensibilizado(System.currentTimeMillis(), temp);
+						tiempo.setTiempoDeSensibilizado(time, temp);
 						tiempo.setTemporizada(temp, 1);
 					}
 				}
