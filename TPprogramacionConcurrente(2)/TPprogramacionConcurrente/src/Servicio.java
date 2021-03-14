@@ -16,7 +16,7 @@ public class Servicio implements Runnable{
 
 	@Override
 	public void run() {
-		while(!administrador.getEnd()) {
+		while(!administrador.getEndServicio()) {
 				monitor.disparar(t1);
 			    System.out.println(Thread.currentThread().getName() + " esta resolviendo una tarea");
 				monitor.disparar(t2);

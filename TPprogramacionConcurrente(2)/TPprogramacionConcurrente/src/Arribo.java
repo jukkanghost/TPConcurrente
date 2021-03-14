@@ -12,8 +12,9 @@ public class Arribo implements Runnable {
 
 	@Override
 	public void run() {
-		while(!administrador.getEnd()) {
+		while(!administrador.getEndArribo()) {
 				monitor.disparar(t);
+				administrador.tareaArribada();
 			    System.out.println("Arribo una tarea");
 			}
 		}

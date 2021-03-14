@@ -29,7 +29,7 @@ public class Monitor {
 	public void disparar(Transicion t) {
 		try {
 			semaforo.acquire();
-			while (!administrador.getEnd()) {
+			while (!administrador.getEndServicio()) {
 				if (rdp.evaluarDisparo(t)) {
 					rdp.disparar(t);
 					log.escribir(t.getId() + "  ");
@@ -72,7 +72,7 @@ public class Monitor {
 		} catch (InterruptedException e) {
 			return;
 		} finally {
-			if (administrador.getEnd()) {
+			if (administrador.getEndServicio()) {
 				for (int i = 0; i < semaforos.length; i++) {
 					semaforos[i].release();
 				}

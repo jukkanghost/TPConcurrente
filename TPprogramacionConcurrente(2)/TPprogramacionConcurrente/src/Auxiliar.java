@@ -11,7 +11,7 @@ public class Auxiliar implements Runnable{
 
 	@Override
 	public void run() {
-		while(!administrador.getEnd()) {
+		while(!administrador.getEndServicio()) {
 			monitor.disparar(t1);
 			System.out.println(Thread.currentThread().getName() + " realizo un disparo");
 		}
