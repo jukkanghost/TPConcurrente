@@ -39,8 +39,6 @@ public class Monitor {
 					int [] esperando = quienesEstan();
 					int [] m = rdp.calcularConjuncion(esperando, rdp.getEx());
 
-					//int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-
 					boolean bandera = false;
                     for (int i = 0; i < m.length; i++) {
                         if (m[i] != 0) {

@@ -3,12 +3,14 @@ public class Politica {
 	private Buffer buffer2;
     private RedDePetri rdp;
     private int confli = 0;
+    private Administrador admin;
     private int[] prioridades = {11, 11, 13,  13,  11,  11,  11,  11,  11, 13, 13, 11,  11, 11, 11, 11, 11, -2};//prioridades[i] = prioridad de la transición i.
 	// Transiciones =              ( 0 - 1 - 10 - 11 - 12 - 13 - 14 - 15 - 16 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 - nada)
-	public Politica(Buffer buffer1, Buffer buffer2, RedDePetri rdp) {
+	public Politica(Buffer buffer1, Buffer buffer2, RedDePetri rdp, Administrador admin) {
 		this.buffer1=buffer1;
 		this.buffer2=buffer2;
-                this.rdp = rdp; 
+        this.rdp = rdp;
+        this.admin = admin; 
 	}
 
     public int resolverConflictoRandom(int[] sens) {
@@ -18,11 +20,9 @@ public class Politica {
 
     public int decidir(int[] sens) {
         int elegida = -1;
-        
-            if (sens[0] == 1 || sens[15] == 1) {
-                confli = 1;
-            }
-        
+        if (sens[0] == 1 || sens[15] == 1) {
+            confli = 1;
+        }
         if (confli == 1) {
             confli = 0;
             double random = Math.random();
@@ -41,6 +41,9 @@ public class Politica {
         else {
             int r = (int) (Math.random() * sens.length);
             while (sens[r] == 0) {
+                r = (int) (Math.random() * sens.length);
+            }
+            while (admin.getEndArribo() && r == 16) {
                 r = (int) (Math.random() * sens.length);
             }
             return elegida = r;
