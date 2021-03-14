@@ -6,6 +6,7 @@ public class Administrador {
     ReentrantReadWriteLock locki; 
 
     private static final int TAREAS_COMPLETADAS = 1000;
+    private static final int TAREAS_ARRIBADAS = 1000;
 
     public Administrador() {
         end = false;
