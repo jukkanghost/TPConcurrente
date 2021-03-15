@@ -6,6 +6,7 @@ public class Monitor {
 	private RedDePetri rdp;
 	private Politica politica;
 	private Log log;
+	
 
 	private Tiempo tiempo;
 	private Administrador administrador;

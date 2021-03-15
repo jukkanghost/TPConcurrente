@@ -43,7 +43,7 @@ public class Politica {
             while (sens[r] == 0) {
                 r = (int) (Math.random() * sens.length);
             }
-            while (admin.getEndArribo() && r == 16) {
+            while (admin.getEndArribo() && r == 8) {
                 r = (int) (Math.random() * sens.length);
             }
             return elegida = r;
