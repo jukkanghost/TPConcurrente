@@ -97,6 +97,8 @@ public class Log {
 		cerrar();
 		return info;
 	}
+
+	
 	
 	
 	public void eliminar (int contador[]) {

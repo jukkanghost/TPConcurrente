@@ -64,7 +64,8 @@ public class Regex {
 		for (int i = 0; i < contadores.length; i++) {
 			System.out.println("invariante " + i + ": " + contadores[i]);
 		}
-		
+		String resultado = invariantes.toString();
+		System.out.println(resultado.trim());
 		log.escribirLog(invariantes);
 	}
 
