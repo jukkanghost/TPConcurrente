@@ -6,6 +6,7 @@ public class Monitor {
 	private RedDePetri rdp;
 	private Politica politica;
 	private Log log;
+
 	
 
 	private Tiempo tiempo;
@@ -19,6 +20,7 @@ public class Monitor {
 		for (int i = 0; i < semaforos.length; i++) {
 			semaforos[i] = new Semaphore(0, true);
 		}
+		
 		this.rdp = rdp;
 		this.politica = politica;
 		this.log = log;
@@ -33,7 +35,8 @@ public class Monitor {
 			while (!administrador.getEndServicio()) {
 				if (rdp.evaluarDisparo(t)) {
 					rdp.disparar(t);
-					log.escribir(t.getId() + "  ");
+					log.escribir("-T" + t.getId() + "-");
+					
 					// INVARIANTES DE PLAZA
 					invariante.CheckInvPlazas();
 

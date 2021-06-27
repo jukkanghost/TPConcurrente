@@ -3,6 +3,7 @@ import java.util.regex.Pattern;
 import java.util.List;
 import java.util.ArrayList;
 
+
 public class Regex {
 	private Log log;
 	private StringBuffer invariantes = new StringBuffer();
@@ -10,7 +11,7 @@ public class Regex {
 
 	// No separar en grupos los invariantes
 
-	private String expresionRegular = "((16\\s)(.*?)(((\\s0)(.*?)(\\s1\\s)(.*?)(((\\s4)(.*?)(\\s5)(.*?)(\\s2)(.*?)(\\s3)(.*?)(7\\s))|((\\s2)(.*?)(\\s3)(.*?)(\\s6))|((\\s2)(.*?)(\\s6)(.*?)(\\s3))|((\\s6)(.*?)(\\s2)(.*?)(\\s3))))|((8\\s)(.*?)(9\\s)(.*?)(((12\\s)(.*?)(13\\s)(.*?)(10\\s)(.*?)(11\\s)(.*?)(15\\s))|((10\\s)(.*?)(11\\s)(.*?)(14\\s))|((10\\s)(.*?)(14\\s)(.*?)(11\\s))|((14\\s)(.*?)(10\\s)(.*?)(11\\s))))))";
+	private String expresionRegular = "((-T16-)(.*?)(((-T0-)(.*?)(-T1-)(.*?)(((-T4-)(.*?)(-T5-)(.*?)(-T2-)(.*?)(-T3-)(.*?)(-T7-))|((-T2-)(.*?)(-T3-)(.*?)(-T6-))|((-T2-)(.*?)(-T6-)(.*?)(-T3-))|((-T6-)(.*?)(-T2-)(.*?)(-T3-))))|((-T8-)(.*?)(-T9-)(.*?)(((-T12-)(.*?)(-T13-)(.*?)(-T10-)(.*?)(-T11-)(.*?)(-T15-))|((-T10-)(.*?)(-T11-)(.*?)(-T14-))|((-T10-)(.*?)(-T14-)(.*?)(-T11-))|((-T14-)(.*?)(-T10-)(.*?)(-T11-))))))";
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
@@ -63,7 +64,7 @@ public class Regex {
 		for (int i = 0; i < contadores.length; i++) {
 			System.out.println("invariante " + i + ": " + contadores[i]);
 		}
-
+		
 		log.escribirLog(invariantes);
 	}
 

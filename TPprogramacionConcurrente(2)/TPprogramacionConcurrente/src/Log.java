@@ -51,8 +51,8 @@ public class Log {
 		abrir();
 		pw.print(texto);
 		cerrar();
-		file.delete();
-		file1.renameTo(file);
+		/* file.delete();
+		file1.renameTo(file); */
 	}
 	
 	public String leer() {
@@ -96,7 +96,6 @@ public class Log {
 		}
 		cerrar();
 		return info;
-		//System.out.println("info " + info);
 	}
 	
 	
