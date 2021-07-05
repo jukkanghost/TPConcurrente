@@ -44,13 +44,13 @@ public class Main {
 		Transicion transicion16 = new Transicion(t16, 16);
 
 		Administrador administrador = new Administrador();
-
+		Log log = new Log();
 		
 		Tiempo tiempo = new Tiempo();
-		RedDePetri rdp = new RedDePetri(tiempo);
+		RedDePetri rdp = new RedDePetri(tiempo, administrador);
 		Buffer buffer1 = new Buffer(rdp, 1);
 		Buffer buffer2 = new Buffer(rdp, 2);
-		Log log = new Log();
+		
 		InvPlazas invariante = new InvPlazas(rdp);
 		Politica politica = new Politica(buffer1, buffer2, rdp, administrador);
 		Monitor monitor = new Monitor(rdp, politica, log, tiempo, administrador, invariante);
@@ -124,20 +124,22 @@ public class Main {
 		ab2.start();
 
 		try {
-			serv1.join();
-			serv2.join();
+			ar.join();
+			enc1.join();
+		enc2.join();
+		aux1.join();
+		aux2.join();
+		serv1.join();
+		serv2.join();
+		
+		ab1.join();
+		ab2.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
 		
-		ar.interrupt();
-		ab1.interrupt();
-		ab2.interrupt();
-		enc1.interrupt();
-		enc2.interrupt();
-		aux1.interrupt();
-		aux2.interrupt();
+		
 		
 		
 		long endTime = System.nanoTime() - startTime;
