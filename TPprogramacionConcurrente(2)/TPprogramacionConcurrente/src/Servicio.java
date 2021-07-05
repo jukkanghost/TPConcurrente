@@ -20,7 +20,7 @@ public class Servicio implements Runnable{
 				monitor.disparar(t1);
 			    System.out.println(Thread.currentThread().getName() + " esta resolviendo una tarea");
 				monitor.disparar(t2);
-				administrador.tareaCompetada();
+				//administrador.tareaCompetada();
 				tareas++;
 				System.out.println(Thread.currentThread().getName() + " resolvio " + tareas + " tareas.");
 			    System.out.println("Tareas resueltas: " + administrador.getTareas());

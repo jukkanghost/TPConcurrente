@@ -17,11 +17,12 @@ public class Encendido implements Runnable{
 	public void run() {
 		while(!administrador.getEndServicio()) {
 			monitor.disparar(t1);
-			//System.out.println(Thread.currentThread().getName() + " esta encendiendo el nucleo");
+			System.out.println(Thread.currentThread().getName() + " esta encendiendo el nucleo");
 			monitor.disparar(t2);
-			//System.out.println(Thread.currentThread().getName() + " encendio el nucleo");
+			System.out.println(Thread.currentThread().getName() + " encendio el nucleo");
 			monitor.disparar(t3);
-			//System.out.println(Thread.currentThread().getName() + " apago el nucleo");
+			administrador.tareaCompetada();
+			System.out.println(Thread.currentThread().getName() + " apago el nucleo");
 		}
 	}
 

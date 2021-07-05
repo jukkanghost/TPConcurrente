@@ -13,6 +13,7 @@ public class Auxiliar implements Runnable{
 	public void run() {
 		while(!administrador.getEndServicio()) {
 			monitor.disparar(t1);
+			administrador.tareaCompetada();
 			System.out.println(Thread.currentThread().getName() + " realizo un disparo");
 		}
 	}
