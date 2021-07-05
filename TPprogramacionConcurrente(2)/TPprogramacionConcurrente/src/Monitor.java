@@ -6,11 +6,13 @@ public class Monitor {
 	private RedDePetri rdp;
 	private Politica politica;
 	private Log log;
+	private boolean finish = true;
 	
 
 	private Tiempo tiempo;
 	private Administrador administrador;
 	private InvPlazas invariante;
+	private int servicios = 0;
 
 	public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo, Administrador admin,
 			InvPlazas invariantes) {
@@ -40,8 +42,15 @@ public class Monitor {
 					invariante.CheckInvPlazas();
 
 					int [] esperando = quienesEstan();
+					/* for (int i = 0; i < esperando.length; i++) {
+						System.out.print(esperando[i]);
+					} */
+					//System.out.println("\n----");
 					int [] m = rdp.calcularConjuncion(esperando, rdp.getEx());
-
+					/* for (int i = 0; i < m.length; i++) {
+						System.out.print(m[i]);
+					} */
+					//System.out.println("\n----");
 					boolean bandera = false;
                     for (int i = 0; i < m.length; i++) {
                         if (m[i] != 0) {
@@ -57,25 +66,30 @@ public class Monitor {
 					
 					// int decision = politica.resolverConflictoRandom(sensibilizadas);
 					// int decision = politica.resolverConflicto(sensibilizadas);
+					
 					semaforos[decision].release();
 					}
 					break;
 				} else {
 					semaforo.release();
 					dormir(t);
-					try {
-						semaforo.acquire();
-					} catch (Exception exit) {
-						break;
-					}
+						try {
+							semaforo.acquire();
+						} catch (Exception exit) {
+							System.out.println(t.getId());
+							break;
+						}
 				}
 			}
 		} catch (InterruptedException e) {
 			return;
 		} finally {
-			if (administrador.getEndServicio()) {
-				for (int i = 0; i < semaforos.length; i++) {
-					semaforos[i].release();
+			if (administrador.getEndArribo()) {
+				int [] esperando = quienesEstan();
+				for (int i = 0; i < esperando.length; i++) {
+					if(esperando[i] != 0) {
+						semaforos[i].release();
+					}
 				}
 			}
 			semaforo.release();
@@ -99,7 +113,9 @@ public class Monitor {
 			try {
 				for (int i = 0; i < t.getTransicion().length; i++) {
 					if (t.getTransicion()[i] == 1) {
+						
 						semaforos[i].acquire();
+						
 					}
 				}
 			} catch (InterruptedException exit) {

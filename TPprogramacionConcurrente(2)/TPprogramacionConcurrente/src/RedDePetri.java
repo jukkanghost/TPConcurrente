@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 public class RedDePetri {
 	private int[][] matrizIncidencia = { { -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0 },
@@ -62,21 +63,31 @@ public class RedDePetri {
 	private int[] b = new int[17];
 	private int[] ex = new int[17];
 	private Tiempo tiempo;
+	private Administrador administrador;
+	private int[] marcadoinicial = { 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0 };
+	private boolean cortar = false;
 
-
-	public RedDePetri(Tiempo tiempo) {
+	public RedDePetri(Tiempo tiempo, Administrador administrador) {
 		calcularE();
 		calcularQ();
 		calcularB();
 		ex = calcularConjuncion(e, b);
 		this.tiempo = tiempo;
+		this.administrador = administrador;
 	}
 
 	public int[] getEx() {
-        return ex;
-    }
+		return ex;
+	}
 
 	public boolean evaluarDisparo(Transicion t) {
+		if(administrador.getEndArribo()) {
+			System.out.println("evaluar disparo arribo-----");
+			if(t.getId() == 8) {
+				System.out.println("es arribo-----");
+				return false;
+			}
+		}
 		boolean aviso = false;
 		int mult[] = new int[marcado.length];
 		int suma[] = new int[marcado.length];
@@ -148,25 +159,33 @@ public class RedDePetri {
 		calcularB();
 		ex = calcularConjuncion(e, b);
 		SetearTiempos(t);
+		/* if (administrador.getEndServicio()) {
+			if (Arrays.equals(marcado, marcadoinicial)) {
+				System.out.println("estado inicial");
+				administrador.setEndMonitor();
+				cortar = true;
+			}
+		} */
 		return 1;
 	}
 
-	private void SetearTiempos (Transicion t) {
-		//aviso que ya disparo, entonces ya se puede setear el tiempo de vuelta
-		if(tiempo.esTemporal(t)) {
+	private void SetearTiempos(Transicion t) {
+		// aviso que ya disparo, entonces ya se puede setear el tiempo de vuelta
+		if (tiempo.esTemporal(t)) {
 			tiempo.setTemporizada(t.getId(), 0);
 		}
 
-		//Obtengo las transiciones sensibilizadas por el disparo y las temporales
-		int [] sensibilizadas = getTransicionesSensibilizadas();
+		// Obtengo las transiciones sensibilizadas por el disparo y las temporales
+		int[] sensibilizadas = getTransicionesSensibilizadas();
 		List<Integer> sensibilizadasTraducidas = traductor(sensibilizadas);
 		List<Integer> temporales = tiempo.getTemporales();
-		//y me fijo si alguna temporal fue sensibilizada por el disparo para marcar el tiempo
+		// y me fijo si alguna temporal fue sensibilizada por el disparo para marcar el
+		// tiempo
 		for (int i = 0; i < temporales.size(); i++) {
 			int temp = temporales.get(i);
 			for (int j = 0; j < sensibilizadasTraducidas.size(); j++) {
-				if(sensibilizadasTraducidas.get(j) == temp) {
-					if(!tiempo.getTemporizada(temp)){
+				if (sensibilizadasTraducidas.get(j) == temp) {
+					if (!tiempo.getTemporizada(temp)) {
 						tiempo.setTiempoDeSensibilizado(System.currentTimeMillis(), temp);
 						tiempo.setTemporizada(temp, 1);
 					}
@@ -174,8 +193,6 @@ public class RedDePetri {
 			}
 		}
 	}
-
-	
 
 	private void calcularE() {
 		for (int i = 0; i < 17; i++) {
@@ -308,14 +325,13 @@ public class RedDePetri {
 		return tSensibilizadas;
 	}
 
-	public List<Integer> traductor(int []sensibilizadas) {
-		int [] traduc = {0, 1, 10, 11, 12, 13, 14, 15, 16, 2, 3, 4, 5, 6, 7, 8, 9};
-		List <Integer> devolver = new ArrayList<Integer>();
+	public List<Integer> traductor(int[] sensibilizadas) {
+		int[] traduc = { 0, 1, 10, 11, 12, 13, 14, 15, 16, 2, 3, 4, 5, 6, 7, 8, 9 };
+		List<Integer> devolver = new ArrayList<Integer>();
 		for (int i = 0; i < sensibilizadas.length; i++) {
 			devolver.add(traduc[sensibilizadas[i]]);
 		}
-		return devolver;	
+		return devolver;
 	}
 
-	
 }
