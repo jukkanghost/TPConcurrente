@@ -44,8 +44,9 @@ public class Politica {
                 r = (int) (Math.random() * sens.length);
             }
             if(admin.getEndArribo()) {
-                if(r == 16){
+                while (r == 16) {
                     System.out.println("decision arribo------");
+                    r = (int) (Math.random() * sens.length);
                 }
             }
             return elegida = r;

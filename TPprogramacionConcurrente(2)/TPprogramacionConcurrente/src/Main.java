@@ -124,20 +124,23 @@ public class Main {
 		ab2.start();
 
 		try {
-			ar.join();
+			
 			enc1.join();
 		enc2.join();
 		aux1.join();
 		aux2.join();
-		serv1.join();
-		serv2.join();
 		
-		ab1.join();
-		ab2.join();
+		
+		
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
+		ar.interrupt();
+		ab1.interrupt();
+		ab2.interrupt();
+		serv1.interrupt();
+		serv2.interrupt();
 		
 		
 		
