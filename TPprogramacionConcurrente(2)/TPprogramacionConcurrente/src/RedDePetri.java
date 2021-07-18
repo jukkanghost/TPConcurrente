@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 public class RedDePetri {
 	private int[][] matrizIncidencia = { { -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0 },
@@ -64,8 +63,6 @@ public class RedDePetri {
 	private int[] ex = new int[17];
 	private Tiempo tiempo;
 	private Administrador administrador;
-	private int[] marcadoinicial = { 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0 };
-	private boolean cortar = false;
 
 	public RedDePetri(Tiempo tiempo, Administrador administrador) {
 		calcularE();
@@ -82,9 +79,9 @@ public class RedDePetri {
 
 	public boolean evaluarDisparo(Transicion t) {
 		if(administrador.getEndArribo()) {
-			System.out.println("evaluar disparo arribo-----");
+			//System.out.println("evaluar disparo arribo-----");
 			if(t.getId() == 8) {
-				System.out.println("es arribo-----");
+				//System.out.println("es arribo-----");
 				return false;
 			}
 		}

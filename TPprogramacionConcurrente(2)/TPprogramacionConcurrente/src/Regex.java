@@ -11,7 +11,7 @@ public class Regex {
 
 	// No separar en grupos los invariantes
 
-	private String expresionRegular = "((-T16-)(.*?)(((-T0-)(.*?)(-T1-)(.*?)(((-T4-)(.*?)(-T5-)(.*?)(-T2-)(.*?)(-T3-)(.*?)(-T7-))|((-T2-)(.*?)(-T6-)(.*?)(-T3-))|((-T2-)(.*?)(-T3-)(.*?)(-T6-))|((-T6-)(.*?)(-T2-)(.*?)(-T3-))))|((-T8-)(.*?)(-T9-)(.*?)(((-T12-)(.*?)(-T13-)(.*?)(-T10-)(.*?)(-T11-)(.*?)(-T15-))|((-T10-)(.*?)(-T14-)(.*?)(-T11-))|((-T10-)(.*?)(-T11-)(.*?)(-T14-))|((-T14-)(.*?)(-T10-)(.*?)(-T11-))))))";
+	private String expresionRegular = "((-T16-)(.*?)(((-T0-)(.*?)(-T1-)(.*?)(((-T4-)(.*?)(-T5-)(.*?)(-T2-)(.*?)(-T3-)(.*?)(-T7-))|((-T6-)(.*?)(-T2-)(.*?)(-T3-))|((-T2-)(.*?)(-T6-)(.*?)(-T3-))|((-T2-)(.*?)(-T3-)(.*?)(-T6-))))|((-T8-)(.*?)(-T9-)(.*?)(((-T12-)(.*?)(-T13-)(.*?)(-T10-)(.*?)(-T11-)(.*?)(-T15-))|((-T14-)(.*?)(-T10-)(.*?)(-T11-))|((-T10-)(.*?)(-T14-)(.*?)(-T11-))|((-T10-)(.*?)(-T11-)(.*?)(-T14-))))))";
 
 	List<Integer> startIndexs = new ArrayList<>();
 	List<Integer> endIndexs = new ArrayList<>();
@@ -26,8 +26,7 @@ public class Regex {
 	}
 
 	public void chequeoInvariantes() {
-		invariantes = log.sacarInfo();
-		//invariantes.append("16  0  1  4  5  7  2  3  16    0  1    2   3  6 10  11  8  9  12  13  4  5   15  7  1  8  9  12  13  4  5   10   11  15    10  11   8  9    12  13  6  15     1  8  9  6  12   13   10  11    10    11     15  1  8  9   6   12  13 "); 
+		invariantes = log.sacarInfo(); 
 		Pattern patternTodo = Pattern.compile(expresionRegular);
 
 		
@@ -42,7 +41,7 @@ public class Regex {
 			Matcher matcherExpresionRegular = patternTodo.matcher(invariantes);
 			//System.out.println(invariantes.toString());
 			if (matcherExpresionRegular.find()) { //mientras que la expresion regular haga match
-				System.out.println("hola" + matcherExpresionRegular.toMatchResult().group());
+			//	System.out.println("matcheo: " + matcherExpresionRegular.toMatchResult().group());
 				int invarianteMatcheado = invarianteMatch(matcherExpresionRegular);
 				contadores[invarianteMatcheado] = contadores[invarianteMatcheado] + 1;
 				LlenarListaInvariantes(matcherExpresionRegular, listaInvariantes.get(invarianteMatcheado));
@@ -62,18 +61,27 @@ public class Regex {
 		}
 
 		//imprimir contadores
+		int serv1 = 0, serv2 = 0;
 		for (int i = 0; i < contadores.length; i++) {
 			System.out.println("invariante " + i + ": " + contadores[i]);
 		}
+		for (int i = 0; i < 4; i++) {
+			serv1 += contadores[i]; 
+		}
+		for (int i = 4; i < 8; i++) {
+			serv2 += contadores[i]; 
+		}
 		System.out.println("Invariantes encontrados en total " + contadorTodo);
+		System.out.println("Servicio 1 realizo " + serv1 + " tareas.\nServicio 2 realizo " + serv2 + " tareas.");
 		String resultado = invariantes.toString();
 		if (resultado.length() == 0) {
 			System.out.println("Ejecucion Correcta");
 		}
 		else{
 			System.out.println(resultado.trim());
-			log.escribirLog(invariantes);
+			
 		}
+		log.escribirLog(invariantes);
 		
 	}
 
@@ -95,7 +103,7 @@ public class Regex {
 			}
 		}
 		
-		System.out.println("invariante encontrado es : " + inv);
+		//System.out.println("invariante encontrado es : " + inv);
 		return inv;
 	}
 

@@ -6,13 +6,10 @@ public class Monitor {
 	private RedDePetri rdp;
 	private Politica politica;
 	private Log log;
-	private boolean finish = true;
-	
-
 	private Tiempo tiempo;
 	private Administrador administrador;
 	private InvPlazas invariante;
-	private int servicios = 0;
+	
 
 	public Monitor(RedDePetri rdp, Politica politica, Log log, Tiempo tiempo, Administrador admin,
 			InvPlazas invariantes) {
@@ -42,15 +39,9 @@ public class Monitor {
 					invariante.CheckInvPlazas();
 
 					int [] esperando = quienesEstan();
-					/* for (int i = 0; i < esperando.length; i++) {
-						System.out.print(esperando[i]);
-					} */
-					//System.out.println("\n----");
+
 					int [] m = rdp.calcularConjuncion(esperando, rdp.getEx());
-					/* for (int i = 0; i < m.length; i++) {
-						System.out.print(m[i]);
-					} */
-					//System.out.println("\n----");
+
 					boolean bandera = false;
                     for (int i = 0; i < m.length; i++) {
                         if (m[i] != 0) {

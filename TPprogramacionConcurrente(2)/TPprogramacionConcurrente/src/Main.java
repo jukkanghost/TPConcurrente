@@ -52,7 +52,7 @@ public class Main {
 		Buffer buffer2 = new Buffer(rdp, 2);
 		
 		InvPlazas invariante = new InvPlazas(rdp);
-		Politica politica = new Politica(buffer1, buffer2, rdp, administrador);
+		Politica politica = new Politica(buffer1, buffer2, administrador);
 		Monitor monitor = new Monitor(rdp, politica, log, tiempo, administrador, invariante);
 
 

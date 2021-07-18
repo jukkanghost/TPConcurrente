@@ -27,7 +27,7 @@ public class Administrador {
 
     public void tareaCompetada() {
         locki.writeLock().lock();
-        if (tareasCompletadas == TAREAS_COMPLETADAS) {
+        if (tareasCompletadas == TAREAS_COMPLETADAS - 1) {
             setEndServicio();
         } else {
             tareasCompletadas++;
@@ -36,7 +36,7 @@ public class Administrador {
     }
 
     public void tareaArribada() {
-        if (tareasArribadas == TAREAS_ARRIBADAS) {
+        if (tareasArribadas == TAREAS_ARRIBADAS - 1) {
             setEndArribo();
         } else {
             tareasArribadas++;
