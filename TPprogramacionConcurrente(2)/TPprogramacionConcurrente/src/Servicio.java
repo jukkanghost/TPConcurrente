@@ -18,10 +18,6 @@ public class Servicio implements Runnable{
 	public void run() {
 		while(!administrador.getEndServicio()) {
 				monitor.disparar(t1);
-<<<<<<< HEAD
-			    //tiempo.setTiempoActual(System.currentTimeMillis(), t1);
-=======
->>>>>>> CORRECION-FINAL
 			    System.out.println(Thread.currentThread().getName() + " esta resolviendo una tarea");
 				monitor.disparar(t2);
 			}

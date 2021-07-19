@@ -114,28 +114,14 @@ public class RedDePetri {
 		// Si es temporal
 		if (tiempo.esTemporal(t)) {
 			long time = tiempo.calcularTiempo(t);
-<<<<<<< HEAD
-			System.out.println("tiempo " + time);
-			if (time>0) {
-				return false;
-			}
-			else {
-
-=======
 			if (time > 0) {
 				return false;
 			} else {
->>>>>>> CORRECION-FINAL
 				return true;
 			}
 		}
 		return true;
 	}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> CORRECION-FINAL
 	public int disparar(Transicion t) {
 		boolean aviso = false;
 		int mult[] = new int[marcado.length];
@@ -168,28 +154,6 @@ public class RedDePetri {
 		calcularQ();
 		calcularB();
 		ex = calcularConjuncion(e, b);
-<<<<<<< HEAD
-		//borra el valor
-		tiempo.setTiempoActual(0, t.getId());
-		//Setear tiempos
-		System.out.println("Estoy aca");
-		int[] sensibilizadas = getTransicionesSensibilizadas();
-		for (int i = 0; i < sensibilizadas.length; i++) {
-			System.out.println("sensibilizadas " +sensibilizadas[i]);
-		}
-		
-		for (int i = 0; i < sensibilizadas.length; i++ ) {
-			if(tiempo.esTemporal2(sensibilizadas[i])) {
-				System.out.println("Soy temporal " + sensibilizadas[i] );
-				if(tiempo.getTiempoInicial(sensibilizadas[i]) == 0) {
-
-					tiempo.setTiempoActual(System.currentTimeMillis(), sensibilizadas[i]);
-					tiempo.displayTiempo();
-				}
-			}
-		}
-		return 1;
-=======
 		SetearTiempos(t);
 		/* if (administrador.getEndServicio()) {
 			if (Arrays.equals(marcado, marcadoinicial)) {
@@ -224,7 +188,6 @@ public class RedDePetri {
 				}
 			}
 		}
->>>>>>> CORRECION-FINAL
 	}
 
 	private void calcularE() {

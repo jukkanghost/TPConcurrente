@@ -33,20 +33,6 @@ public class Monitor {
 			while (!administrador.getEndServicio()) {
 				if (rdp.evaluarDisparo(t)) {
 					rdp.disparar(t);
-<<<<<<< HEAD
-					log.escribir(t.getId() + "  ");
-					//INVARIANTES DE PLAZA
-					invariante.CheckInvPlazas();
-
-                    int[] sensibilizadas = rdp.getTransicionesSensibilizadas();
-					for (int i = 0; i < sensibilizadas.length; i++) {
-						System.out.println("sensibilizadas " +sensibilizadas[i]);
-					}
-                    int decision = politica.decidir(sensibilizadas); //Una vex que tengo la decisión, despierto a la transici+on elegida (en el vector de semáforos)
-                    System.out.println("decision politca "+ decision);
-					//int decision = politica.resolverConflictoRandom(sensibilizadas);
-					//int decision = politica.resolverConflicto(sensibilizadas);
-=======
 					log.escribir("-T" + t.getId() + "-");
 					
 					// INVARIANTES DE PLAZA
@@ -72,7 +58,6 @@ public class Monitor {
 					// int decision = politica.resolverConflictoRandom(sensibilizadas);
 					// int decision = politica.resolverConflicto(sensibilizadas);
 					
->>>>>>> CORRECION-FINAL
 					semaforos[decision].release();
 					}
 					break;

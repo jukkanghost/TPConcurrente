@@ -14,11 +14,7 @@ public class Arribo implements Runnable {
 	public void run() {
 		while(!administrador.getEndArribo()) {
 				monitor.disparar(t);
-<<<<<<< HEAD
-			    //tiempo.setTiempoActual(System.currentTimeMillis(), t);
-=======
 				administrador.tareaArribada();
->>>>>>> CORRECION-FINAL
 			    System.out.println("Arribo una tarea");
 			}
 		}
