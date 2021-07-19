@@ -2,20 +2,23 @@ public class Arribo implements Runnable {
 	private Monitor monitor;
 	private Transicion t;
 	private Administrador administrador;
-	private Tiempo tiempo;
+	
         
-	public Arribo(Monitor monitor, Transicion t, Administrador admin, Tiempo tiempo) {
+	public Arribo(Monitor monitor, Transicion t, Administrador admin) {
 		this.monitor=monitor;
 		this.t = t;
 		administrador = admin;
-		this.tiempo = tiempo;
 	}
 
 	@Override
 	public void run() {
-		while(!administrador.getEnd()) {
+		while(!administrador.getEndArribo()) {
 				monitor.disparar(t);
+<<<<<<< HEAD
 			    //tiempo.setTiempoActual(System.currentTimeMillis(), t);
+=======
+				administrador.tareaArribada();
+>>>>>>> CORRECION-FINAL
 			    System.out.println("Arribo una tarea");
 			}
 		}

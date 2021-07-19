@@ -16,7 +16,7 @@ public class aBuffer implements Runnable {
     
     @Override
     public void run() {
-        while(!administrador.getEnd()) {
+        while(!administrador.getEndServicio()) {
             monitor.disparar(t1);
             System.out.println("Se dirige al buffer " + buffer.getId());
             monitor.disparar(t2);
